@@ -33,8 +33,8 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
     return (
       <div
         className={[
-          'flex items-center gap-2 rounded-full border bg-gray-50 px-3 py-2.5 transition-colors duration-150',
-          focused ? 'border-primary' : 'border-gray-400',
+          'flex items-center gap-2 rounded-full border bg-gray-100 px-3 py-2.5 transition-colors duration-150',
+          focused ? 'border-primary' : 'border-[#BDBDBD]',
           className,
         ]
           .filter(Boolean)

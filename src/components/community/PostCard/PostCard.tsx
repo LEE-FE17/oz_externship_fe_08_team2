@@ -83,7 +83,7 @@ export function PostCard({ post, onClick }: PostCardProps) {
       onClick={onClick}
       data-testid="post-card"
       className={[
-        'border-border-base w-full overflow-hidden border-b py-6',
+        'w-full overflow-hidden rounded-xl p-6',
         onClick
           ? 'cursor-pointer transition-colors duration-150 hover:bg-gray-100/60'
           : '',
@@ -91,7 +91,7 @@ export function PostCard({ post, onClick }: PostCardProps) {
         .filter(Boolean)
         .join(' ')}
     >
-      <div className="flex w-full gap-5 overflow-hidden">
+      <div className="flex h-40.75 w-full justify-between overflow-hidden">
         {/* 텍스트 영역 */}
         <div className="flex min-w-0 flex-1 flex-col gap-1.5 overflow-hidden">
           {/* 카테고리 */}
