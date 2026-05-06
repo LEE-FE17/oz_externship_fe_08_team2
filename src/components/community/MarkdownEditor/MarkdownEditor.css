@@ -102,6 +102,14 @@
   opacity: 0.3 !important;
 }
 
+/* ── Tab 들여쓰기로 생성된 인덴티드 코드블록 배경 제거 ── */
+/* pre:not([class]) = 언어 미지정 코드블록 (4칸 들여쓰기 또는 언어 없는 펜싱) */
+.post-editor-wrap .wmde-markdown pre:not([class]) {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
 /* ── 헤딩 스타일 복원 ── */
 .post-editor-wrap .wmde-markdown h1 {
   font-size: 2em !important;

@@ -3,7 +3,7 @@
  * @figma 커뮤니티 상세 페이지 (회원)        https://www.figma.com/design/4rJmEFUU2HMWVy3qUcYZRs/%EC%A0%9C%EB%AA%A9-%EC%97%86%EC%9D%8C?node-id=1-10585&m=dev
  * @figma 커뮤니티 상세 페이지 (회원-작성자) https://www.figma.com/design/4rJmEFUU2HMWVy3qUcYZRs/%EC%A0%9C%EB%AA%A9-%EC%97%86%EC%9D%8C?node-id=1-10696&m=dev
  */
-import { Component, Suspense, useState } from 'react'
+import { Component, Suspense, useState, useRef } from 'react'
 import type { ErrorInfo, ReactNode } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { ConfirmModal } from '@/components/common/Modal/ConfirmModal'
@@ -12,7 +12,7 @@ import { PostAuthorActions } from '@/components/community/PostAuthorActions'
 import { PostBody } from '@/components/community/PostBody'
 import { PostActions } from '@/components/community/PostActions'
 import { Toast } from '@/components/common/Toast'
-import { CommunityCommentsPage } from '@/pages/community/CommunityCommentsPage'
+import { CommunityComments } from '@/components/community/CommunityComments'
 import { usePostDetail } from '@/features/posts/detail'
 import { useTogglePostLike } from '@/features/posts/like'
 import { useDeletePost } from '@/features/posts/delete'
@@ -64,11 +64,9 @@ function CommunityDetailContent({ postId }: { postId: number }) {
   const { data: post } = usePostDetail(postId)
   const { isAuthenticated, user } = useAuthStore()
 
-  const isLoggedIn = isAuthenticated
-  const isAuthor = isAuthenticated && user?.nickname === post.author.nickname
+  const isAuthor = isAuthenticated && user?.id === post.author.id
 
-  const [isLiked, setIsLiked] = useState(post.is_liked ?? false)
-  const [likeCount, setLikeCount] = useState(post.like_count)
+  const pendingNavigate = useRef<string | null>(null)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [toast, setToast] = useState<{
     message: string
@@ -98,22 +96,8 @@ function CommunityDetailContent({ postId }: { postId: number }) {
     }
     if (isLikePending) return
 
-    // 낙관적 업데이트: API 응답 전 즉시 UI 반영
-    const prevLiked = isLiked
-    const prevCount = likeCount
-    setIsLiked(!isLiked)
-    setLikeCount(isLiked ? likeCount - 1 : likeCount + 1)
-
-    toggleLike(isLiked, {
-      onSuccess: (data) => {
-        // 서버 응답으로 최종 동기화
-        setIsLiked(data.is_liked)
-        setLikeCount(data.like_count)
-      },
+    toggleLike(post.is_liked, {
       onError: () => {
-        // 실패 시 이전 상태로 롤백
-        setIsLiked(prevLiked)
-        setLikeCount(prevCount)
         showToast('좋아요 처리에 실패했습니다.', 'error')
       },
     })
@@ -123,9 +107,9 @@ function CommunityDetailContent({ postId }: { postId: number }) {
     if (isDeletePending) return
     deletePost(postId, {
       onSuccess: () => {
-        setIsDeleteModalOpen(false) // 모달 즉시 닫기
+        setIsDeleteModalOpen(false)
+        pendingNavigate.current = '/community'
         showToast('게시글이 삭제되었습니다.', 'success')
-        setTimeout(() => navigate('/community'), 1500)
       },
       onError: () => {
         showToast('게시글 삭제에 실패했습니다.', 'error')
@@ -160,7 +144,7 @@ function CommunityDetailContent({ postId }: { postId: number }) {
           }}
           createdAt={post.created_at}
           viewCount={post.view_count}
-          likeCount={likeCount}
+          likeCount={post.like_count}
         />
 
         {/* 수정/삭제 버튼 — 작성자 전용 */}
@@ -181,9 +165,9 @@ function CommunityDetailContent({ postId }: { postId: number }) {
 
         {/* 좋아요 */}
         <PostActions
-          likeCount={likeCount}
-          isLiked={isLiked}
-          isLoggedIn={isLoggedIn}
+          likeCount={post.like_count}
+          isLiked={post.is_liked}
+          isLoggedIn={isAuthenticated}
           isLikePending={isLikePending}
           onLike={handleLike}
           onShare={handleShare}
@@ -193,17 +177,21 @@ function CommunityDetailContent({ postId }: { postId: number }) {
         <div className="h-px w-full bg-gray-200" />
 
         {/* 댓글 */}
-        <CommunityCommentsPage postId={post.id} />
+        <CommunityComments postId={post.id} />
       </article>
 
       {/* 게시글 삭제 확인 모달 */}
       <ConfirmModal
         isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
+        onClose={() => {
+          if (!isDeletePending) setIsDeleteModalOpen(false)
+        }}
         message={`게시글을 삭제하시겠습니까?\n삭제된 게시글은 복구할 수 없습니다.`}
         confirmLabel="삭제"
         danger
+        closeOnConfirm={false}
         isConfirmDisabled={isDeletePending}
+        isCancelDisabled={isDeletePending}
         onConfirm={handleDeleteConfirm}
       />
 
@@ -212,7 +200,13 @@ function CommunityDetailContent({ postId }: { postId: number }) {
         message={toast.message}
         variant={toast.variant}
         visible={toast.visible}
-        onClose={() => setToast((prev) => ({ ...prev, visible: false }))}
+        onClose={() => {
+          setToast((prev) => ({ ...prev, visible: false }))
+          if (pendingNavigate.current) {
+            navigate(pendingNavigate.current)
+            pendingNavigate.current = null
+          }
+        }}
       />
     </main>
   )
@@ -222,7 +216,7 @@ export function CommunityDetailPage() {
   const { postId } = useParams<{ postId: string }>()
   const postIdNum = Number(postId)
 
-  if (isNaN(postIdNum)) {
+  if (isNaN(postIdNum) || postIdNum <= 0) {
     return (
       <main className="mx-auto max-w-4xl px-4 py-10">
         <p className="text-text-muted">잘못된 게시글 ID입니다.</p>

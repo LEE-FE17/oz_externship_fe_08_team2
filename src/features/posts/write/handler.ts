@@ -1,4 +1,5 @@
 import { http, HttpResponse } from 'msw'
+import { postMockStore } from '../mockStore'
 
 export const writeHandlers = [
   http.post('/api/v1/posts', async ({ request }) => {
@@ -9,8 +10,13 @@ export const writeHandlers = [
         { status: 400 }
       )
     }
+    const pk = postMockStore.add({
+      title: body.title as string,
+      content: body.content as string,
+      category_id: Number(body.category_id),
+    })
     return HttpResponse.json(
-      { detail: '게시글이 성공적으로 등록되었습니다.', pk: 1 },
+      { detail: '게시글이 성공적으로 등록되었습니다.', pk },
       { status: 201 }
     )
   }),

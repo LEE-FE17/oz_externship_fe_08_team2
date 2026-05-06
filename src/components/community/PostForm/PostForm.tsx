@@ -165,7 +165,7 @@ export function PostForm({
       <div className="flex justify-end gap-3">
         {showCancel && onCancel && <CancelButton onClick={onCancel} />}
         <SubmitButton
-          label={mode === 'write' ? '등록하기' : '수정하기'}
+          label={mode === 'write' ? '등록하기' : '완료'}
           loading={isPending}
         />
       </div>

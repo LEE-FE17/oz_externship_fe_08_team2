@@ -22,7 +22,9 @@ function formatRelativeTime(isoString: string): string {
   if (sec < 60) return '방금 전'
   if (min < 60) return `${min}분 전`
   if (hour < 24) return `${hour}시간 전`
-  return `${day}일 전`
+  if (day < 7) return `${day}일 전`
+  const d = new Date(isoString)
+  return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`
 }
 
 export function PostHeader({

@@ -25,19 +25,12 @@ interface ToastState {
 export function CommunityEditPage() {
   const navigate = useNavigate()
   const { postId } = useParams<{ postId: string }>()
+  const { isAuthenticated } = useAuthStore()
   const [toast, setToast] = useState<ToastState>({
     visible: false,
     message: '',
     variant: 'success',
   })
-
-  const { isAuthenticated } = useAuthStore()
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate(ROUTES.AUTH.LOGIN || '/login', { replace: true })
-    }
-  }, [isAuthenticated, navigate])
 
   const {
     data: categories = [],
@@ -52,6 +45,12 @@ export function CommunityEditPage() {
   } = useQuery(postDetailQueryOptions(Number(postId)))
 
   const { mutate: updatePost, isPending } = useUpdatePost(postId!)
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate(ROUTES.AUTH.LOGIN || '/login', { replace: true })
+    }
+  }, [isAuthenticated, navigate])
 
   useEffect(() => {
     if (isPostError) {
@@ -92,7 +91,7 @@ export function CommunityEditPage() {
   }
 
   return (
-    <div className="mx-auto max-w-236 px-4 py-8">
+    <div className="mx-auto w-full max-w-236 px-4 py-8">
       <PageHeader title="커뮤니티 게시글 수정" className="mb-8" />
       <PostForm
         mode="edit"
@@ -110,10 +109,6 @@ export function CommunityEditPage() {
             : undefined
         }
         onSubmit={handleSubmit}
-        onCancel={() =>
-          navigate(ROUTES.COMMUNITY.DETAIL.replace(':postId', postId!))
-        }
-        showCancel={true}
         isPending={isPending}
       />
       <Toast

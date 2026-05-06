@@ -39,7 +39,7 @@ export function CommentSortButton({
 
       {showModal && (
         <div
-          className="absolute top-full right-0 z-10 mt-1 flex flex-col items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md"
+          className="absolute top-full right-0 z-10 mt-1 flex flex-col items-center justify-center gap-2 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md"
           style={{ width: '138px', height: '116px' }}
         >
           {(['latest', 'oldest'] as const).map((order) => {
@@ -55,10 +55,11 @@ export function CommentSortButton({
                 }}
                 className="flex items-center justify-center rounded-md text-base transition-colors duration-150"
                 style={{
-                  width: '98px',
+                  width: '118px',
                   height: '42px',
                   backgroundColor: isSelected ? '#EFE6FC' : 'transparent',
                   color: isSelected ? '#6201E0' : '#1a1a1a',
+                  fontWeight: isSelected ? 700 : 400,
                   fontSize: '16px',
                 }}
                 onMouseEnter={(e) => {
