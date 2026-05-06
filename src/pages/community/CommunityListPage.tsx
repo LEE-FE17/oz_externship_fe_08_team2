@@ -234,7 +234,7 @@ export function CommunityListPage() {
                 aria-selected={category === tab.value}
                 onClick={() => handleCategoryChange(tab.value)}
                 className={[
-                  'shrink-0 cursor-pointer rounded-md px-3.5 py-1.5 text-sm font-medium transition-colors duration-150 outline-none',
+                  'shrink-0 cursor-pointer rounded-md h-10.5 px-3.5 text-sm font-medium transition-colors duration-150 outline-none',
                   category === tab.value
                     ? 'bg-primary-100 text-primary'
                     : 'text-text-muted hover:text-text-body',
@@ -267,7 +267,7 @@ export function CommunityListPage() {
       </div>
 
       {/* 글 목록 */}
-      <div className="w-full min-h-96">
+      <div className="flex min-h-96 w-full flex-col gap-10">
         {isLoading && (
           <p className="text-text-muted py-16 text-center text-sm">
             불러오는 중...
@@ -298,13 +298,14 @@ export function CommunityListPage() {
 
       {/* 페이지네이션 */}
       {totalPages > 1 && (
-        <div className="py-8 flex w-full items-center justify-center gap-1">
+        <div className="border-border-base mt-13 border-t">
+        <div className="flex w-full items-center justify-center gap-1 py-8">
           <button
             type="button"
             onClick={() => setPage(1)}
             disabled={page === 1}
             aria-label="첫 페이지"
-            className="text-text-muted flex h-8 w-8 items-center justify-center rounded text-sm transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-40"
+            className="text-text-muted flex items-center justify-center rounded px-2.5 py-3.25 text-[20px] leading-5 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:text-[#BDBDBD]"
           >
             «
           </button>
@@ -313,7 +314,7 @@ export function CommunityListPage() {
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
             aria-label="이전 페이지"
-            className="text-text-muted flex h-8 w-8 items-center justify-center rounded text-sm transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-40"
+            className="text-text-muted flex items-center justify-center rounded px-2.5 py-3.25 text-[20px] leading-5 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:text-[#BDBDBD]"
           >
             ‹
           </button>
@@ -340,7 +341,7 @@ export function CommunityListPage() {
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
             aria-label="다음 페이지"
-            className="text-text-muted flex h-8 w-8 items-center justify-center rounded text-sm transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-40"
+            className="text-text-muted flex items-center justify-center rounded px-2.5 py-3.25 text-[20px] leading-5 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:text-[#BDBDBD]"
           >
             ›
           </button>
@@ -349,10 +350,11 @@ export function CommunityListPage() {
             onClick={() => setPage(totalPages)}
             disabled={page === totalPages}
             aria-label="마지막 페이지"
-            className="text-text-muted flex h-8 w-8 items-center justify-center rounded text-sm transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-40"
+            className="text-text-muted flex items-center justify-center rounded px-2.5 py-3.25 text-[20px] leading-5 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:text-[#BDBDBD]"
           >
             »
           </button>
+        </div>
         </div>
       )}
     </div>
