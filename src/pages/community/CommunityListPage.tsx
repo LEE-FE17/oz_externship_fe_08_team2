@@ -36,6 +36,7 @@ const CATEGORY_TABS: {
   { value: 'popular', label: '인기글', categoryId: undefined },
   { value: 'notice', label: '공지사항', categoryId: 1 },
   { value: 'free', label: '자유게시판', categoryId: 2 },
+  { value: 'concern', label: '고민 상담', categoryId: 3 },
   { value: 'recruit', label: '구인/협업', categoryId: 4 },
   { value: 'resource', label: '자료공유', categoryId: 5 },
 ]
@@ -171,7 +172,7 @@ export function CommunityListPage() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-10">
+    <div className="mx-auto w-full max-w-225 px-15 py-10">
       {/* 페이지 타이틀 */}
       <h1 className="text-text-heading text-3xl font-bold tracking-tight">
         커뮤니티
@@ -205,9 +206,9 @@ export function CommunityListPage() {
       </div>
 
       {/* 카테고리 탭 + 정렬 */}
-      <div className="mt-8 grid w-full grid-cols-[1fr_8rem] items-center gap-4">
+      <div className="border-border-base mt-5 grid w-full grid-cols-[1fr_8rem] items-center gap-4 border-b pb-3">
         {/* 탭 스크롤 영역 */}
-        <div className="border-border-base flex items-center border-b">
+        <div className="flex items-center">
           {/* 왼쪽 화살표 */}
           <button
             type="button"
@@ -233,7 +234,7 @@ export function CommunityListPage() {
                 aria-selected={category === tab.value}
                 onClick={() => handleCategoryChange(tab.value)}
                 className={[
-                  'shrink-0 cursor-pointer rounded-md px-4 py-1.5 text-sm font-medium transition-colors duration-150 outline-none',
+                  'shrink-0 cursor-pointer rounded-md px-3.5 py-1.5 text-sm font-medium transition-colors duration-150 outline-none',
                   category === tab.value
                     ? 'bg-primary-100 text-primary'
                     : 'text-text-muted hover:text-text-body',
@@ -297,7 +298,7 @@ export function CommunityListPage() {
 
       {/* 페이지네이션 */}
       {totalPages > 1 && (
-        <div className="mt-8 flex w-full items-center justify-center gap-1">
+        <div className="py-8 flex w-full items-center justify-center gap-1">
           <button
             type="button"
             onClick={() => setPage(1)}

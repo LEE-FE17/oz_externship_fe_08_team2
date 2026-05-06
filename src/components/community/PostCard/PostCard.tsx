@@ -83,7 +83,7 @@ export function PostCard({ post, onClick }: PostCardProps) {
       onClick={onClick}
       data-testid="post-card"
       className={[
-        'border-border-base w-full overflow-hidden border-b py-6',
+        'w-full overflow-hidden py-5',
         onClick
           ? 'cursor-pointer transition-colors duration-150 hover:bg-gray-100/60'
           : '',
