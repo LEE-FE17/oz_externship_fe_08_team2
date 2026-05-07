@@ -135,6 +135,14 @@
   list-style-type: square !important;
 }
 
+.post-editor-wrap .wmde-markdown ol ol {
+  list-style-type: lower-alpha !important;
+}
+
+.post-editor-wrap .wmde-markdown ol ol ol {
+  list-style-type: lower-roman !important;
+}
+
 /* ── 헤딩 스타일 복원 ── */
 .post-editor-wrap .wmde-markdown h1 {
   font-size: 2em !important;
