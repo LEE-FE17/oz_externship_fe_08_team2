@@ -39,12 +39,6 @@ const CATEGORY_TABS: {
   { value: 'concern', label: '고민 상담', categoryId: 3 },
   { value: 'recruit', label: '구인/협업', categoryId: 4 },
   { value: 'resource', label: '자료공유', categoryId: 5 },
-  { value: 'notice', label: '공지사항', categoryId: 2 },
-  { value: 'free', label: '자유게시판', categoryId: 3 },
-  { value: 'daily', label: '일상 공유', categoryId: 4 },
-  { value: 'dev', label: '개발 지식 공유', categoryId: 5 },
-  { value: 'job', label: '취업 정보 공유', categoryId: 6 },
-  { value: 'recruit', label: '프로젝트 구인', categoryId: 7 },
 ]
 
 function PencilIcon() {
