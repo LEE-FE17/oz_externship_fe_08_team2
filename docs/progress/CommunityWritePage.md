@@ -131,3 +131,4 @@
 | `style: PageHeader 제목 폰트 크기 Figma 기준 32px 적용`                     | text-2xl → text-[32px]                                        |
 | `feat: 게시글 수정 페이지 취소 버튼 조건부 표시 적용`                       | showCancel={true} 추가                                        |
 | `style: 커뮤니티 수정 페이지 및 관련 모듈 코드 포맷팅 정리`                 | CommunityEditPage 미사용 import/변수 제거, 후행 쉼표 정리     |
+| `fix: 마크다운 에디터 글머리/번호 목록 스타일 복원`                         | Tailwind preflight 초기화로 사라진 ul/ol list-style 재선언    |
