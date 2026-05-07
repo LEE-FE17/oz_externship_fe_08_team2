@@ -136,3 +136,4 @@
 | `fix: 글자색 팔레트에 흰색 추가`                                            | TEXT_PALETTE_COLORS 분리, 흰색 스와치 테두리 처리                    |
 | `fix: 게시글 수정 후 상세 페이지에 이전 내용이 표시되는 문제 수정`          | useUpdatePost onSuccess에 postDetail 캐시 invalidate 추가            |
 | `fix: 게시글 작성/수정 후 상세 페이지에 mock 데이터가 표시되는 문제 수정`   | create 시 detail 캐시 remove, edit MSW 핸들러 postMockStore 업데이트 |
+| `fix: 수정 페이지 카테고리 드롭다운에서 전체 게시판 제외`                   | CommunityEditPage 누락된 카테고리 필터 추가 (작성 페이지와 동일)     |
