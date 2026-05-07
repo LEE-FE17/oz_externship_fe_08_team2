@@ -268,34 +268,32 @@ export function CommunityListPage() {
 
       {/* 글 목록 */}
       <div className="flex min-h-96 w-full flex-col gap-10">
-        <div className="min-h-96 w-full">
-          {isLoading && (
-            <p className="text-text-muted py-16 text-center text-sm">
-              불러오는 중...
-            </p>
-          )}
-          {isError && (
-            <p className="text-error py-16 text-center text-sm">
-              게시글을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.
-            </p>
-          )}
-          {!isLoading && !isError && (data?.results?.length ?? 0) === 0 && (
-            <p className="text-text-muted py-16 text-center text-sm">
-              게시글이 없습니다.
-            </p>
-          )}
-          {data?.results?.map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              onClick={() =>
-                navigate(
-                  ROUTES.COMMUNITY.DETAIL.replace(':postId', String(post.id))
-                )
-              }
-            />
-          ))}
-        </div>
+        {isLoading && (
+          <p className="text-text-muted py-16 text-center text-sm">
+            불러오는 중...
+          </p>
+        )}
+        {isError && (
+          <p className="text-error py-16 text-center text-sm">
+            게시글을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.
+          </p>
+        )}
+        {!isLoading && !isError && (data?.results?.length ?? 0) === 0 && (
+          <p className="text-text-muted py-16 text-center text-sm">
+            게시글이 없습니다.
+          </p>
+        )}
+        {data?.results?.map((post) => (
+          <PostCard
+            key={post.id}
+            post={post}
+            onClick={() =>
+              navigate(
+                ROUTES.COMMUNITY.DETAIL.replace(':postId', String(post.id))
+              )
+            }
+          />
+        ))}
       </div>
 
       {/* 페이지네이션 */}
