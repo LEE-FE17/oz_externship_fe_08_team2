@@ -17,7 +17,7 @@ export function useCommentsInfiniteQuery(
     queryKey: ['posts', postId, 'comments', ordering],
     queryFn: async ({ pageParam }) => {
       const response = await api.get<CommentsResponse>(
-        `/api/v1/posts/${postId}/comments`,
+        `/api/v1/posts/${postId}/comments/`,
         {
           params: {
             page: pageParam,
@@ -45,7 +45,7 @@ export function useSubmitComment(postId: number) {
   return useMutation({
     mutationFn: async (body: CommentSubmitRequest) => {
       const response = await api.post<Comment>(
-        `/api/v1/posts/${postId}/comments`,
+        `/api/v1/posts/${postId}/comments/`,
         body
       )
       return response.data
@@ -61,7 +61,7 @@ export function useDeleteComment(postId: number) {
 
   return useMutation({
     mutationFn: async (commentId: number) => {
-      await api.delete(`/api/v1/posts/${postId}/comments/${commentId}`)
+      await api.delete(`/api/v1/posts/${postId}/comments/${commentId}/`)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts', postId, 'comments'] })

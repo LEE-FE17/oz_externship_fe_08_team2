@@ -1,7 +1,6 @@
 import { http, HttpResponse } from 'msw'
 import { categoriesHandlers } from '@/features/posts/categories'
 import { postListHandlers } from '@/features/posts/list'
-import { postListHandlers } from '@/features/posts/list/handler'
 import { writeHandlers } from '@/features/posts/write'
 import { postDetailHandlers } from '@/features/posts/detail'
 import { editHandlers } from '@/features/posts/edit'

@@ -43,7 +43,7 @@ const seedComments = Array.from({ length: 25 }, (_, i) => {
 const mockComments = [...seedComments]
 
 export const commentsHandlers = [
-  http.post('/api/v1/posts/:postId/comments', async ({ params, request }) => {
+  http.post('/api/v1/posts/:postId/comments/', async ({ params, request }) => {
     const { postId } = params
     if (postId === '999') {
       return HttpResponse.json(
@@ -65,7 +65,7 @@ export const commentsHandlers = [
   }),
 
   http.delete(
-    '/api/v1/posts/:postId/comments/:commentId',
+    '/api/v1/posts/:postId/comments/:commentId/',
     async ({ params }) => {
       const { postId, commentId } = params
       if (postId === '999') {
@@ -86,7 +86,7 @@ export const commentsHandlers = [
     }
   ),
 
-  http.get('/api/v1/posts/:postId/comments', async ({ params, request }) => {
+  http.get('/api/v1/posts/:postId/comments/', async ({ params, request }) => {
     await delay(1000)
     const { postId } = params
 
@@ -117,11 +117,11 @@ export const commentsHandlers = [
     const response: CommentsResponse = {
       count: total,
       next: hasNext
-        ? `http://localhost:5173/api/v1/posts/${postId}/comments?page=${page + 1}&page_size=${pageSize}`
+        ? `http://localhost:5173/api/v1/posts/${postId}/comments/?page=${page + 1}&page_size=${pageSize}`
         : null,
       previous:
         page > 1
-          ? `http://localhost:5173/api/v1/posts/${postId}/comments?page=${page - 1}&page_size=${pageSize}`
+          ? `http://localhost:5173/api/v1/posts/${postId}/comments/?page=${page - 1}&page_size=${pageSize}`
           : null,
       results,
     }

@@ -39,12 +39,6 @@ const CATEGORY_TABS: {
   { value: 'concern', label: '고민 상담', categoryId: 3 },
   { value: 'recruit', label: '구인/협업', categoryId: 4 },
   { value: 'resource', label: '자료공유', categoryId: 5 },
-  { value: 'notice', label: '공지사항', categoryId: 2 },
-  { value: 'free', label: '자유게시판', categoryId: 3 },
-  { value: 'daily', label: '일상 공유', categoryId: 4 },
-  { value: 'dev', label: '개발 지식 공유', categoryId: 5 },
-  { value: 'job', label: '취업 정보 공유', categoryId: 6 },
-  { value: 'recruit', label: '프로젝트 구인', categoryId: 7 },
 ]
 
 function PencilIcon() {
@@ -240,7 +234,7 @@ export function CommunityListPage() {
                 aria-selected={category === tab.value}
                 onClick={() => handleCategoryChange(tab.value)}
                 className={[
-                  'shrink-0 cursor-pointer rounded-md h-10.5 px-3.5 text-sm font-medium transition-colors duration-150 outline-none',
+                  'h-10.5 shrink-0 cursor-pointer rounded-md px-3.5 text-sm font-medium transition-colors duration-150 outline-none',
                   category === tab.value
                     ? 'bg-primary-100 text-primary'
                     : 'text-text-muted hover:text-text-body',
@@ -274,7 +268,6 @@ export function CommunityListPage() {
 
       {/* 글 목록 */}
       <div className="flex min-h-96 w-full flex-col gap-10">
-      <div className="min-h-96 w-full">
         {isLoading && (
           <p className="text-text-muted py-16 text-center text-sm">
             불러오는 중...
@@ -306,62 +299,62 @@ export function CommunityListPage() {
       {/* 페이지네이션 */}
       {totalPages > 1 && (
         <div className="border-border-base mt-13 border-t">
-        <div className="flex w-full items-center justify-center gap-1 py-8">
-          <button
-            type="button"
-            onClick={() => setPage(1)}
-            disabled={page === 1}
-            aria-label="첫 페이지"
-            className="text-text-muted flex items-center justify-center rounded px-2.5 py-3.25 text-[20px] leading-5 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:text-[#BDBDBD]"
-          >
-            «
-          </button>
-          <button
-            type="button"
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
-            disabled={page === 1}
-            aria-label="이전 페이지"
-            className="text-text-muted flex items-center justify-center rounded px-2.5 py-3.25 text-[20px] leading-5 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:text-[#BDBDBD]"
-          >
-            ‹
-          </button>
-
-          {getPageRange(page, totalPages).map((p) => (
+          <div className="flex w-full items-center justify-center gap-1 py-8">
             <button
-              key={p}
               type="button"
-              onClick={() => setPage(p)}
-              aria-current={p === page ? 'page' : undefined}
-              className={[
-                'flex h-8 w-8 items-center justify-center rounded text-sm font-medium transition-colors',
-                p === page
-                  ? 'bg-primary text-white'
-                  : 'text-text-muted hover:bg-gray-200',
-              ].join(' ')}
+              onClick={() => setPage(1)}
+              disabled={page === 1}
+              aria-label="첫 페이지"
+              className="text-text-muted flex items-center justify-center rounded px-2.5 py-3.25 text-[20px] leading-5 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:text-[#BDBDBD]"
             >
-              {p}
+              «
             </button>
-          ))}
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page === 1}
+              aria-label="이전 페이지"
+              className="text-text-muted flex items-center justify-center rounded px-2.5 py-3.25 text-[20px] leading-5 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:text-[#BDBDBD]"
+            >
+              ‹
+            </button>
 
-          <button
-            type="button"
-            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-            disabled={page === totalPages}
-            aria-label="다음 페이지"
-            className="text-text-muted flex items-center justify-center rounded px-2.5 py-3.25 text-[20px] leading-5 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:text-[#BDBDBD]"
-          >
-            ›
-          </button>
-          <button
-            type="button"
-            onClick={() => setPage(totalPages)}
-            disabled={page === totalPages}
-            aria-label="마지막 페이지"
-            className="text-text-muted flex items-center justify-center rounded px-2.5 py-3.25 text-[20px] leading-5 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:text-[#BDBDBD]"
-          >
-            »
-          </button>
-        </div>
+            {getPageRange(page, totalPages).map((p) => (
+              <button
+                key={p}
+                type="button"
+                onClick={() => setPage(p)}
+                aria-current={p === page ? 'page' : undefined}
+                className={[
+                  'flex h-8 w-8 items-center justify-center rounded text-sm font-medium transition-colors',
+                  p === page
+                    ? 'bg-primary text-white'
+                    : 'text-text-muted hover:bg-gray-200',
+                ].join(' ')}
+              >
+                {p}
+              </button>
+            ))}
+
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={page === totalPages}
+              aria-label="다음 페이지"
+              className="text-text-muted flex items-center justify-center rounded px-2.5 py-3.25 text-[20px] leading-5 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:text-[#BDBDBD]"
+            >
+              ›
+            </button>
+            <button
+              type="button"
+              onClick={() => setPage(totalPages)}
+              disabled={page === totalPages}
+              aria-label="마지막 페이지"
+              className="text-text-muted flex items-center justify-center rounded px-2.5 py-3.25 text-[20px] leading-5 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:text-[#BDBDBD]"
+            >
+              »
+            </button>
+          </div>
         </div>
       )}
     </div>
