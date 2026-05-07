@@ -740,7 +740,7 @@ export function MarkdownEditor({
           api.replaceSelection(`![${file.name}](${objectUrl})`)
           try {
             const serverUrl = await onImageUpload(file)
-            onChange(valueRef.current.replaceAll(objectUrl, serverUrl))
+            handleChange(valueRef.current.replaceAll(objectUrl, serverUrl))
             URL.revokeObjectURL(objectUrl)
             objectUrlsRef.current.delete(objectUrl)
           } catch {
@@ -754,7 +754,7 @@ export function MarkdownEditor({
         input.click()
       },
     }),
-    [onImageUpload, onChange]
+    [onImageUpload, handleChange]
   )
 
   const editorCommands: ICommand[] = useMemo(

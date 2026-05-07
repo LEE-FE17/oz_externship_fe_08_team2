@@ -1,7 +1,7 @@
 /**
  * @figma 커뮤니티 - 글작성하기  https://www.figma.com/design/4rJmEFUU2HMWVy3qUcYZRs/%EC%A0%9C%EB%AA%A9-%EC%97%86%EC%9D%8C?node-id=1-5561&m=dev
  */
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router'
 import type { AxiosError } from 'axios'
 import { ROUTES } from '@/constants/routes'
@@ -43,6 +43,13 @@ export function CommunityWritePage() {
   const categories = rawCategories.filter((c) => c.name !== '전체 게시판')
 
   const { mutate: createPost, isPending } = useCreatePost()
+  const navTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (navTimerRef.current) clearTimeout(navTimerRef.current)
+    }
+  }, [])
 
   const handleSubmit = (values: PostFormSubmitValues) => {
     createPost(values, {
@@ -52,7 +59,7 @@ export function CommunityWritePage() {
           message: '게시글이 등록되었습니다.',
           variant: 'success',
         })
-        setTimeout(() => {
+        navTimerRef.current = setTimeout(() => {
           navigate(ROUTES.COMMUNITY.DETAIL.replace(':postId', String(data.pk)))
         }, 800)
       },

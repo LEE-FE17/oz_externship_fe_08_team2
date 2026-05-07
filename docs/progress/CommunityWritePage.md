@@ -118,22 +118,23 @@
 
 ## 커밋 이력
 
-| 커밋 메시지                                                                 | 내용                                                                 |
-| --------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `feat: 커뮤니티 게시글 작성/수정 페이지 구현`                               | CommunityWritePage, CommunityEditPage, PostForm 초기 구현            |
-| `style: 커뮤니티 글작성 페이지 제목 수정 및 컨테이너 너비 조정`             | max-width 944px, 페이지 제목 조정                                    |
-| `feat: 글작성 페이지 카테고리에서 전체 게시판 제외`                         | rawCategories 필터링 적용                                            |
-| `feat: 커뮤니티 글작성 에디터 툴바 커스텀 및 반응형 레이아웃 적용`          | 툴바 2열 구성, 커스텀 커맨드 전체 적용                               |
-| `fix: 글작성 페이지 레이아웃 및 에디터 툴바 개선`                           | CSS 오버라이드, 카드 border/radius, 미리보기 패널 배경               |
-| `style: 글작성 페이지 제목 구분선 제거 및 미리보기 h1/h2 하단 선 제거`      | 스타일 정리                                                          |
-| `fix: 마크다운 미리보기 헤딩 스타일 복원`                                   | Tailwind preflight 초기화 대응 (h1~h6 CSS 재선언)                    |
-| `feat: PostForm 실행 취소/다시 실행 커스텀 히스토리 스택 구현 및 버그 수정` | undo/redo 스택, 이미지 업로드 수정, 드롭다운·모서리 버그 수정        |
-| `style: PageHeader 제목 폰트 크기 Figma 기준 32px 적용`                     | text-2xl → text-[32px]                                               |
-| `feat: 게시글 수정 페이지 취소 버튼 조건부 표시 적용`                       | showCancel={true} 추가                                               |
-| `style: 커뮤니티 수정 페이지 및 관련 모듈 코드 포맷팅 정리`                 | CommunityEditPage 미사용 import/변수 제거, 후행 쉼표 정리            |
-| `fix: 마크다운 에디터 글머리/번호 목록 스타일 복원`                         | Tailwind preflight 초기화로 사라진 ul/ol list-style 재선언           |
-| `fix: 번호 목록 중첩 시 하위 단계 스타일 적용`                              | ol ol → lower-alpha, ol ol ol → lower-roman 중첩 스타일 추가         |
-| `fix: 글자색 팔레트에 흰색 추가`                                            | TEXT_PALETTE_COLORS 분리, 흰색 스와치 테두리 처리                    |
-| `fix: 게시글 수정 후 상세 페이지에 이전 내용이 표시되는 문제 수정`          | useUpdatePost onSuccess에 postDetail 캐시 invalidate 추가            |
-| `fix: 게시글 작성/수정 후 상세 페이지에 mock 데이터가 표시되는 문제 수정`   | create 시 detail 캐시 remove, edit MSW 핸들러 postMockStore 업데이트 |
-| `fix: 수정 페이지 카테고리 드롭다운에서 전체 게시판 제외`                   | CommunityEditPage 누락된 카테고리 필터 추가 (작성 페이지와 동일)     |
+| 커밋 메시지                                                                 | 내용                                                                  |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| `feat: 커뮤니티 게시글 작성/수정 페이지 구현`                               | CommunityWritePage, CommunityEditPage, PostForm 초기 구현             |
+| `style: 커뮤니티 글작성 페이지 제목 수정 및 컨테이너 너비 조정`             | max-width 944px, 페이지 제목 조정                                     |
+| `feat: 글작성 페이지 카테고리에서 전체 게시판 제외`                         | rawCategories 필터링 적용                                             |
+| `feat: 커뮤니티 글작성 에디터 툴바 커스텀 및 반응형 레이아웃 적용`          | 툴바 2열 구성, 커스텀 커맨드 전체 적용                                |
+| `fix: 글작성 페이지 레이아웃 및 에디터 툴바 개선`                           | CSS 오버라이드, 카드 border/radius, 미리보기 패널 배경                |
+| `style: 글작성 페이지 제목 구분선 제거 및 미리보기 h1/h2 하단 선 제거`      | 스타일 정리                                                           |
+| `fix: 마크다운 미리보기 헤딩 스타일 복원`                                   | Tailwind preflight 초기화 대응 (h1~h6 CSS 재선언)                     |
+| `feat: PostForm 실행 취소/다시 실행 커스텀 히스토리 스택 구현 및 버그 수정` | undo/redo 스택, 이미지 업로드 수정, 드롭다운·모서리 버그 수정         |
+| `style: PageHeader 제목 폰트 크기 Figma 기준 32px 적용`                     | text-2xl → text-[32px]                                                |
+| `feat: 게시글 수정 페이지 취소 버튼 조건부 표시 적용`                       | showCancel={true} 추가                                                |
+| `style: 커뮤니티 수정 페이지 및 관련 모듈 코드 포맷팅 정리`                 | CommunityEditPage 미사용 import/변수 제거, 후행 쉼표 정리             |
+| `fix: 마크다운 에디터 글머리/번호 목록 스타일 복원`                         | Tailwind preflight 초기화로 사라진 ul/ol list-style 재선언            |
+| `fix: 번호 목록 중첩 시 하위 단계 스타일 적용`                              | ol ol → lower-alpha, ol ol ol → lower-roman 중첩 스타일 추가          |
+| `fix: 글자색 팔레트에 흰색 추가`                                            | TEXT_PALETTE_COLORS 분리, 흰색 스와치 테두리 처리                     |
+| `fix: 게시글 수정 후 상세 페이지에 이전 내용이 표시되는 문제 수정`          | useUpdatePost onSuccess에 postDetail 캐시 invalidate 추가             |
+| `fix: 게시글 작성/수정 후 상세 페이지에 mock 데이터가 표시되는 문제 수정`   | create 시 detail 캐시 remove, edit MSW 핸들러 postMockStore 업데이트  |
+| `fix: 수정 페이지 카테고리 드롭다운에서 전체 게시판 제외`                   | CommunityEditPage 누락된 카테고리 필터 추가 (작성 페이지와 동일)      |
+| `fix: 이미지 업로드 undo 우회 및 작성 페이지 타이머 cleanup`                | 이미지 URL 교체 시 handleChange 사용, unmount 시 navigate 타이머 정리 |
