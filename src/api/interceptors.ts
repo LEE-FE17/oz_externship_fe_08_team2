@@ -26,9 +26,8 @@ const redirectToLogin = () => {
   useAuthStore.getState().logout()
   localStorage.removeItem('accessToken')
 
-  const loginPath = ROUTES.AUTH.LOGIN || ROUTES.COMMUNITY.LIST
-  if (window.location.pathname !== loginPath) {
-    window.location.href = loginPath
+  if (ROUTES.AUTH.LOGIN && window.location.pathname !== ROUTES.AUTH.LOGIN) {
+    window.location.href = ROUTES.AUTH.LOGIN
   }
 }
 
