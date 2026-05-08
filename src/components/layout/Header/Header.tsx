@@ -5,6 +5,7 @@ import { ROUTES } from '@/constants/routes'
 import { ProfileIcon } from './icons'
 import { ProfileDropdown } from './ProfileDropdown'
 import { useAuthStore } from '@/stores/authStore'
+import { useLogout } from '@/features/accounts/logout'
 
 export interface HeaderProps {
   bannerText?: string
@@ -17,7 +18,16 @@ export function Header({
 }: HeaderProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const navigate = useNavigate()
-  const { isAuthenticated, user } = useAuthStore()
+  const { isAuthenticated, user, login, logout } = useAuthStore()
+  const { mutate: requestLogout } = useLogout()
+
+  const toggleAuth = () => {
+    if (isAuthenticated) {
+      logout()
+    } else {
+      login({ id: 1, nickname: '테스트유저', email: 'test@example.com', role: 'user' })
+    }
+  }
 
   return (
     <header className="flex w-full flex-col">
@@ -55,6 +65,16 @@ export function Header({
             </nav>
           </div>
 
+          {/* Dev: Auth toggle */}
+          {import.meta.env.DEV && (
+            <button
+              onClick={toggleAuth}
+              className="rounded border border-dashed border-gray-400 px-2 py-1 text-xs text-gray-500 hover:bg-gray-100"
+            >
+              {isAuthenticated ? '🔓 로그아웃 (dev)' : '🔒 로그인 (dev)'}
+            </button>
+          )}
+
           {/* Right: Auth or Profile */}
           {isAuthenticated ? (
             <div className="relative">
@@ -90,8 +110,13 @@ export function Header({
                   setDropdownOpen(false)
                 }}
                 onLogout={() => {
-                  onLogout?.()
-                  setDropdownOpen(false)
+                  requestLogout(undefined, {
+                    onSettled: () => {
+                      logout()
+                      onLogout?.()
+                      setDropdownOpen(false)
+                    },
+                  })
                 }}
               />
             </div>
