@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import axios from 'axios'
+import api from '@/api/instance'
 import { RouterProvider } from '@/providers/RouterProvider'
 import { useAuthStore } from '@/stores/authStore'
 
@@ -9,12 +9,8 @@ function AuthInitializer() {
 
   useEffect(() => {
     if (isAuthenticated) return
-    const token = localStorage.getItem('accessToken')
-    const headers: Record<string, string> = token
-      ? { Authorization: `Bearer ${token}` }
-      : {}
-    axios
-      .get('/api/v1/accounts/me/', { headers })
+    api
+      .get('/api/v1/accounts/me/')
       .then(({ data }) => {
         login({
           id: data.id,
