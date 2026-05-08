@@ -24,6 +24,7 @@ interface Props {
 export function CommunityComments({ postId }: Props) {
   const navigate = useNavigate()
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
+  const isInitialized = useAuthStore((state) => state.isInitialized)
   const user = useAuthStore((state) => state.user)
   const loadMoreRef = useRef<HTMLDivElement>(null)
   const [inputValue, setInputValue] = useState('')
@@ -209,8 +210,8 @@ export function CommunityComments({ postId }: Props) {
         }}
       />
 
-      {/* 댓글 입력창 — 로그인 사용자만 */}
-      {isAuthenticated && (
+      {/* 댓글 입력창 — 로그인 사용자만 (초기화 완료 후 판단) */}
+      {isInitialized && isAuthenticated && (
         <CommentInput
           value={inputValue}
           onChange={setInputValue}

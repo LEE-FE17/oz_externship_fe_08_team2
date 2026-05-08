@@ -21,7 +21,7 @@ interface ToastState {
 
 export function CommunityWritePage() {
   const navigate = useNavigate()
-  const { isAuthenticated } = useAuthStore()
+  const { isAuthenticated, isInitialized } = useAuthStore()
   const [toast, setToast] = useState<ToastState>({
     visible: false,
     message: '',
@@ -29,10 +29,10 @@ export function CommunityWritePage() {
   })
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (isInitialized && !isAuthenticated) {
       navigate(ROUTES.AUTH.LOGIN || ROUTES.COMMUNITY.LIST, { replace: true })
     }
-  }, [isAuthenticated, navigate])
+  }, [isInitialized, isAuthenticated, navigate])
 
   const {
     data: rawCategories = [],
