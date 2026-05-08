@@ -18,16 +18,8 @@ export function Header({
 }: HeaderProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const navigate = useNavigate()
-  const { isAuthenticated, user, login, logout } = useAuthStore()
+  const { isAuthenticated, user, logout } = useAuthStore()
   const { mutate: requestLogout } = useLogout()
-
-  const toggleAuth = () => {
-    if (isAuthenticated) {
-      logout()
-    } else {
-      login({ id: 1, nickname: '테스트유저', email: 'test@example.com', role: 'user' })
-    }
-  }
 
   return (
     <header className="flex w-full flex-col">
@@ -64,16 +56,6 @@ export function Header({
               </button>
             </nav>
           </div>
-
-          {/* Dev: Auth toggle */}
-          {import.meta.env.DEV && (
-            <button
-              onClick={toggleAuth}
-              className="rounded border border-dashed border-gray-400 px-2 py-1 text-xs text-gray-500 hover:bg-gray-100"
-            >
-              {isAuthenticated ? '🔓 로그아웃 (dev)' : '🔒 로그인 (dev)'}
-            </button>
-          )}
 
           {/* Right: Auth or Profile */}
           {isAuthenticated ? (
