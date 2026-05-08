@@ -14,14 +14,6 @@ export const handlers = [
   http.get('/api/health', () => {
     return HttpResponse.json({ status: 'ok' })
   }),
-  http.get('/api/v1/accounts/me/', () => {
-    return HttpResponse.json({
-      id: 99,
-      nickname: '테스트유저',
-      email: 'test@example.com',
-      profile_img_url: null,
-    })
-  }),
   ...categoriesHandlers,
   ...postListHandlers,
   ...writeHandlers,
