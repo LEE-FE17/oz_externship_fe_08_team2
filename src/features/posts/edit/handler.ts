@@ -1,4 +1,5 @@
 import { http, HttpResponse } from 'msw'
+import { postMockStore } from '../mockStore'
 
 export const editHandlers = [
   http.put('/api/v1/posts/:postId', async ({ request, params }) => {
@@ -9,8 +10,14 @@ export const editHandlers = [
         { status: 400 }
       )
     }
+    const postId = Number(params.postId)
+    postMockStore.update(postId, {
+      title: body.title as string,
+      content: body.content as string,
+      category_id: Number(body.category_id),
+    })
     return HttpResponse.json({
-      id: Number(params.postId),
+      id: postId,
       title: body.title as string,
       content: body.content as string,
       category: { id: body.category_id as number, name: '자유 게시판' },

@@ -1,10 +1,8 @@
-import axios from 'axios'
 import type {
   AxiosInstance,
   InternalAxiosRequestConfig,
   AxiosError,
 } from 'axios'
-import { ROUTES } from '@/constants/routes'
 import { useAuthStore } from '@/stores/authStore'
 
 interface RetryConfig extends InternalAxiosRequestConfig {
@@ -15,12 +13,15 @@ const redirectToLogin = () => {
   useAuthStore.getState().logout()
   localStorage.removeItem('accessToken')
 
-  if (window.location.pathname !== ROUTES.AUTH.LOGIN) {
-    window.location.href = ROUTES.AUTH.LOGIN
-  }
+  // if (window.location.pathname !== ROUTES.AUTH.LOGIN) {
+  //   window.location.href = ROUTES.AUTH.LOGIN
+  // }
 }
 
-export function setupInterceptors(instance: AxiosInstance): void {
+export function setupInterceptors(
+  instance: AxiosInstance,
+  baseInstance: AxiosInstance
+): void {
   instance.interceptors.request.use(
     (config) => {
       const token = localStorage.getItem('accessToken')
@@ -45,10 +46,9 @@ export function setupInterceptors(instance: AxiosInstance): void {
         originalConfig._retry = true
 
         try {
-          const { data } = await axios.post(
-            `${import.meta.env.VITE_API_BASE_URL}/api/v1/accounts/me/refresh`,
-            {},
-            { withCredentials: true }
+          const { data } = await baseInstance.post(
+            '/api/v1/accounts/me/refresh',
+            {}
           )
 
           const newToken = data.access_token

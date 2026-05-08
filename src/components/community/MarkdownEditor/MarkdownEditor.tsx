@@ -91,6 +91,24 @@ function stripLineHeightSpan(text: string): string {
   )
 }
 
+// bold/italic 중첩 적용 시 기존 포맷 보존을 위한 감지 함수
+function detectFormat(text: string): { bold: boolean; italic: boolean } {
+  const isBoldItalic =
+    text.startsWith('***') && text.endsWith('***') && text.length >= 6
+  const isBold =
+    !isBoldItalic &&
+    text.startsWith('**') &&
+    text.endsWith('**') &&
+    text.length >= 4
+  const isItalic =
+    !isBoldItalic &&
+    !isBold &&
+    text.startsWith('*') &&
+    text.endsWith('*') &&
+    text.length >= 2
+  return { bold: isBoldItalic || isBold, italic: isBoldItalic || isItalic }
+}
+
 // 언더라인 토글: 이미 <u>로 감싸져 있으면 제거, 아니면 추가
 function toggleUnderline(text: string): string {
   if (/^<u>[\s\S]*<\/u>$/.test(text)) {
@@ -196,6 +214,46 @@ const fontSizeCommand: ICommand = {
     </div>
   ),
   execute: () => {},
+}
+
+const boldCommand: ICommand = {
+  name: 'bold',
+  keyCommand: 'bold',
+  buttonProps: { 'aria-label': '굵게', title: '굵게' },
+  icon: <b style={{ fontSize: 13, fontWeight: 700 }}>B</b>,
+  execute: (state, api) => {
+    const sel = state.selectedText
+    const { bold, italic } = detectFormat(sel)
+    if (bold && italic) {
+      api.replaceSelection(`*${sel.slice(3, -3)}*`)
+    } else if (bold) {
+      api.replaceSelection(sel.slice(2, -2))
+    } else if (italic) {
+      api.replaceSelection(`***${sel.slice(1, -1)}***`)
+    } else {
+      api.replaceSelection(`**${sel || '굵게'}**`)
+    }
+  },
+}
+
+const italicCommand: ICommand = {
+  name: 'italic',
+  keyCommand: 'italic',
+  buttonProps: { 'aria-label': '기울임', title: '기울임' },
+  icon: <i style={{ fontSize: 13 }}>I</i>,
+  execute: (state, api) => {
+    const sel = state.selectedText
+    const { bold, italic } = detectFormat(sel)
+    if (bold && italic) {
+      api.replaceSelection(`**${sel.slice(3, -3)}**`)
+    } else if (italic) {
+      api.replaceSelection(sel.slice(1, -1))
+    } else if (bold) {
+      api.replaceSelection(`***${sel.slice(2, -2)}***`)
+    } else {
+      api.replaceSelection(`*${sel || '기울임'}*`)
+    }
+  },
 }
 
 const underlineCommand: ICommand = {
@@ -758,8 +816,8 @@ export function MarkdownEditor({
       fontFamilyCommand,
       fontSizeCommand,
       mdCommands.divider,
-      mdCommands.bold,
-      mdCommands.italic,
+      boldCommand,
+      italicCommand,
       underlineCommand,
       strikethroughCommand,
       bgColorCommand,
