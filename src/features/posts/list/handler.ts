@@ -1,13 +1,14 @@
 import { http, HttpResponse } from 'msw'
 import type { PostListItem, PostListResponse, PostSortOption } from './types'
+import { postMockStore } from '../mockStore'
 
 const HOUR = 3_600_000
 
 const CATEGORIES = [
-  { id: 1, name: '공지사항' },
-  { id: 2, name: '자유게시판' },
-  { id: 4, name: '구인/협업' },
-  { id: 5, name: '자료공유' },
+  { id: 2, name: '공지사항' },
+  { id: 3, name: '자유 게시판' },
+  { id: 4, name: '일상 공유' },
+  { id: 5, name: '개발 지식 공유' },
 ]
 
 const AUTHORS = [
@@ -27,7 +28,7 @@ const BASE_POSTS: PostListItem[] = [
     content:
       '저는 현재 기초전을 매우 앞서 프로젝트의 업도 섭보 게시하려고 합니다. 데이터 분석 경험 있으신 분들과 함께 사이드 프로젝트 진행하고 싶습니다.',
     thumbnail: null,
-    category: { id: 4, name: '구인/협업' },
+    category: { id: 7, name: '프로젝트 구인' },
     author: AUTHORS[0],
     created_at: new Date(now - 1 * HOUR).toISOString(),
     view_count: 60,
@@ -40,7 +41,7 @@ const BASE_POSTS: PostListItem[] = [
     content:
       'https://www.codeit.kr/costudy/join/684e26b75155062e4621fe77힘께 공부해요. 매일 1시간씩 함께 공부할 러닝 메이트를 찾습니다.',
     thumbnail: null,
-    category: { id: 4, name: '구인/협업' },
+    category: { id: 7, name: '프로젝트 구인' },
     author: AUTHORS[1],
     created_at: new Date(now - 2 * HOUR).toISOString(),
     view_count: 60,
@@ -53,7 +54,7 @@ const BASE_POSTS: PostListItem[] = [
     content:
       'https://www.codeit.kr/costudy/join/684e26b75155062e4621fe77 월요병 극복하는 법 공유해요. 다들 화이팅입니다!',
     thumbnail: 'https://picsum.photos/seed/monday/300/200',
-    category: { id: 2, name: '자유게시판' },
+    category: { id: 3, name: '자유 게시판' },
     author: AUTHORS[2],
     created_at: new Date(now - 3 * HOUR).toISOString(),
     view_count: 60,
@@ -157,7 +158,8 @@ export const postListHandlers = [
     const search = url.searchParams.get('search') ?? ''
     const searchFilter = url.searchParams.get('search_filter') ?? 'title'
 
-    let posts = [...ALL_POSTS]
+    // 새로 작성된 게시글을 맨 앞에 합쳐서 처리
+    let posts = [...postMockStore.getAll(), ...ALL_POSTS]
 
     // 카테고리 필터
     if (categoryId) {
@@ -192,10 +194,7 @@ export const postListHandlers = [
 
     const response: PostListResponse = {
       count,
-      next:
-        start + pageSize < count
-          ? `/api/v1/posts/?page=${page + 1}`
-          : null,
+      next: start + pageSize < count ? `/api/v1/posts/?page=${page + 1}` : null,
       previous: page > 1 ? `/api/v1/posts/?page=${page - 1}` : null,
       results,
     }

@@ -3,9 +3,9 @@
  */
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
-import { useAuthStore } from '@/stores/authStore'
 import type { AxiosError } from 'axios'
 import { ROUTES } from '@/constants/routes'
+import { useAuthStore } from '@/stores/authStore'
 import { useCategories } from '@/features/posts/categories'
 import { useCreatePost } from '@/features/posts/write'
 import { Toast } from '@/components/common/Toast'
@@ -61,15 +61,23 @@ export function CommunityWritePage() {
           error_detail?: string | Record<string, string[]>
         }>
         const detail = axiosError.response?.data?.error_detail
-        const message =
-          typeof detail === 'string' ? detail : '요청에 실패했습니다.'
+        let message = '요청에 실패했습니다.'
+        if (typeof detail === 'string') {
+          message = detail
+        } else if (detail && typeof detail === 'object') {
+          const firstValues = Object.values(detail)[0]
+          const firstMsg = Array.isArray(firstValues)
+            ? firstValues[0]
+            : undefined
+          if (firstMsg) message = firstMsg
+        }
         setToast({ visible: true, message, variant: 'error' })
       },
     })
   }
 
   return (
-    <div className="mx-auto max-w-236 px-4 py-8">
+    <div className="mx-auto w-full max-w-236 px-4 py-8">
       <PageHeader title="커뮤니티 게시글 작성" className="mb-8" />
       <PostForm
         mode="write"

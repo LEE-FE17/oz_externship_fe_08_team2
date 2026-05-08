@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import api from '@/api/instance'
 import type {
   CreatePostRequest,
@@ -8,10 +8,14 @@ import type {
 } from './types'
 
 export function useCreatePost() {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (body: CreatePostRequest) => {
       const { data } = await api.post<CreatePostResponse>('/api/v1/posts', body)
       return data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['posts', 'list'] })
     },
   })
 }
