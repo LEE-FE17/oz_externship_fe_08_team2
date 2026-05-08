@@ -25,7 +25,7 @@ interface ToastState {
 export function CommunityEditPage() {
   const navigate = useNavigate()
   const { postId } = useParams<{ postId: string }>()
-  const { isAuthenticated } = useAuthStore()
+  const { isAuthenticated, isInitialized } = useAuthStore()
   const [toast, setToast] = useState<ToastState>({
     visible: false,
     message: '',
@@ -49,10 +49,10 @@ export function CommunityEditPage() {
   const { mutate: updatePost, isPending } = useUpdatePost(postId!)
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate(ROUTES.AUTH.LOGIN || '/login', { replace: true })
+    if (isInitialized && !isAuthenticated) {
+      navigate(ROUTES.AUTH.LOGIN || ROUTES.COMMUNITY.LIST, { replace: true })
     }
-  }, [isAuthenticated, navigate])
+  }, [isInitialized, isAuthenticated, navigate])
 
   useEffect(() => {
     if (isPostError) {

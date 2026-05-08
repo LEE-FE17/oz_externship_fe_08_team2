@@ -105,6 +105,7 @@ function getPageRange(current: number, total: number): number[] {
 export function CommunityListPage() {
   const navigate = useNavigate()
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
+  const isInitialized = useAuthStore((s) => s.isInitialized)
   const tabsScrollRef = useRef<HTMLDivElement>(null)
 
   const [searchType, setSearchType] = useState<PostSearchFilter | undefined>(
@@ -144,8 +145,8 @@ export function CommunityListPage() {
   }
 
   const handleWriteClick = () => {
-    if (!isAuthenticated) {
-      navigate('/login')
+    if (isInitialized && !isAuthenticated) {
+      navigate(ROUTES.AUTH.LOGIN || ROUTES.COMMUNITY.LIST)
       return
     }
     navigate(ROUTES.COMMUNITY.WRITE)

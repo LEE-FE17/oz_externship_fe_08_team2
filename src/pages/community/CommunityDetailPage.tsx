@@ -62,9 +62,10 @@ class DetailErrorBoundary extends Component<
 function CommunityDetailContent({ postId }: { postId: number }) {
   const navigate = useNavigate()
   const { data: post } = usePostDetail(postId)
-  const { isAuthenticated, user } = useAuthStore()
+  const { isAuthenticated, isInitialized, user } = useAuthStore()
 
-  const isAuthor = isAuthenticated && user?.id === post.author.id
+  const isAuthor =
+    isInitialized && isAuthenticated && user?.id === post.author.id
 
   const pendingNavigate = useRef<string | null>(null)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
