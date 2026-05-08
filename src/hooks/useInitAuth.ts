@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { refreshAccessToken } from '@/api/interceptors'
 import { useAuthStore } from '@/stores/authStore'
 import api from '@/api/instance'
 
@@ -15,9 +14,9 @@ export function useInitAuth() {
   const { login, logout } = useAuthStore()
 
   useEffect(() => {
-    refreshAccessToken()
-      .then(async () => {
-        const { data } = await api.get<MeResponse>('/api/v1/accounts/me')
+    api
+      .get<MeResponse>('/api/v1/accounts/me/')
+      .then(({ data }) => {
         login({
           id: data.id,
           nickname: data.nickname,

@@ -30,7 +30,7 @@ export function CommunityWritePage() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate(ROUTES.AUTH.LOGIN || '/login', { replace: true })
+      navigate(ROUTES.AUTH.LOGIN || ROUTES.COMMUNITY.LIST, { replace: true })
     }
   }, [isAuthenticated, navigate])
 
