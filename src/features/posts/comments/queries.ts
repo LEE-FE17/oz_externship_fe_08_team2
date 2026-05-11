@@ -8,19 +8,23 @@ import type { Comment, CommentsResponse, CommentSubmitRequest } from './types'
 
 const PAGE_SIZE = 10
 
-export type CommentSortOrder = 'latest' | 'oldest'
-
 export function useCommentsInfiniteQuery(
   postId: number,
-  enabled = true,
-  sortOrder: CommentSortOrder = 'latest'
+  ordering: 'latest' | 'oldest' = 'latest',
+  enabled = true
 ) {
   return useInfiniteQuery({
-    queryKey: ['posts', postId, 'comments', sortOrder],
+    queryKey: ['posts', postId, 'comments', ordering],
     queryFn: async ({ pageParam }) => {
       const response = await api.get<CommentsResponse>(
-        `/api/v1/posts/${postId}/comments`,
-        { params: { page: pageParam, page_size: PAGE_SIZE, sort: sortOrder } }
+        `/api/v1/posts/${postId}/comments/`,
+        {
+          params: {
+            page: pageParam,
+            page_size: PAGE_SIZE,
+            ordering: ordering === 'latest' ? '-created_at' : 'created_at',
+          },
+        }
       )
       return response.data
     },
@@ -41,7 +45,7 @@ export function useSubmitComment(postId: number) {
   return useMutation({
     mutationFn: async (body: CommentSubmitRequest) => {
       const response = await api.post<Comment>(
-        `/api/v1/posts/${postId}/comments`,
+        `/api/v1/posts/${postId}/comments/`,
         body
       )
       return response.data
@@ -57,7 +61,7 @@ export function useDeleteComment(postId: number) {
 
   return useMutation({
     mutationFn: async (commentId: number) => {
-      await api.delete(`/api/v1/posts/${postId}/comments/${commentId}`)
+      await api.delete(`/api/v1/posts/${postId}/comments/${commentId}/`)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts', postId, 'comments'] })

@@ -43,7 +43,7 @@ const seedComments = Array.from({ length: 25 }, (_, i) => {
 const mockComments = [...seedComments]
 
 export const commentsHandlers = [
-  http.post('/api/v1/posts/:postId/comments', async ({ params, request }) => {
+  http.post('/api/v1/posts/:postId/comments/', async ({ params, request }) => {
     const { postId } = params
     if (postId === '999') {
       return HttpResponse.json(
@@ -65,7 +65,7 @@ export const commentsHandlers = [
   }),
 
   http.delete(
-    '/api/v1/posts/:postId/comments/:commentId',
+    '/api/v1/posts/:postId/comments/:commentId/',
     async ({ params }) => {
       const { postId, commentId } = params
       if (postId === '999') {
@@ -86,7 +86,7 @@ export const commentsHandlers = [
     }
   ),
 
-  http.get('/api/v1/posts/:postId/comments', async ({ params, request }) => {
+  http.get('/api/v1/posts/:postId/comments/', async ({ params, request }) => {
     await delay(1000)
     const { postId } = params
 
@@ -100,10 +100,13 @@ export const commentsHandlers = [
     const url = new URL(request.url)
     const page = Number(url.searchParams.get('page') ?? 1)
     const pageSize = Number(url.searchParams.get('page_size') ?? 10)
-    const sort = url.searchParams.get('sort') ?? 'latest'
+    const ordering = url.searchParams.get('ordering') ?? '-created_at'
 
-    const sorted =
-      sort === 'oldest' ? [...mockComments].reverse() : mockComments
+    const sorted = [...mockComments].sort((a, b) => {
+      const diff =
+        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      return ordering === 'created_at' ? diff : -diff
+    })
 
     const total = sorted.length
     const start = (page - 1) * pageSize
@@ -114,11 +117,11 @@ export const commentsHandlers = [
     const response: CommentsResponse = {
       count: total,
       next: hasNext
-        ? `http://localhost:5173/api/v1/posts/${postId}/comments?page=${page + 1}&page_size=${pageSize}`
+        ? `http://localhost:5173/api/v1/posts/${postId}/comments/?page=${page + 1}&page_size=${pageSize}`
         : null,
       previous:
         page > 1
-          ? `http://localhost:5173/api/v1/posts/${postId}/comments?page=${page - 1}&page_size=${pageSize}`
+          ? `http://localhost:5173/api/v1/posts/${postId}/comments/?page=${page - 1}&page_size=${pageSize}`
           : null,
       results,
     }

@@ -5,6 +5,7 @@ import { ROUTES } from '@/constants/routes'
 import { ProfileIcon } from './icons'
 import { ProfileDropdown } from './ProfileDropdown'
 import { useAuthStore } from '@/stores/authStore'
+import { useLogout } from '@/features/accounts/logout'
 
 export interface HeaderProps {
   bannerText?: string
@@ -17,7 +18,8 @@ export function Header({
 }: HeaderProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const navigate = useNavigate()
-  const { isAuthenticated, user } = useAuthStore()
+  const { isAuthenticated, user, logout } = useAuthStore()
+  const { mutate: requestLogout } = useLogout()
 
   return (
     <header className="flex w-full flex-col">
@@ -90,8 +92,13 @@ export function Header({
                   setDropdownOpen(false)
                 }}
                 onLogout={() => {
-                  onLogout?.()
-                  setDropdownOpen(false)
+                  requestLogout(undefined, {
+                    onSettled: () => {
+                      logout()
+                      onLogout?.()
+                      setDropdownOpen(false)
+                    },
+                  })
                 }}
               />
             </div>

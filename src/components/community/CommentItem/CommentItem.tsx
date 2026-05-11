@@ -70,7 +70,7 @@ export function CommentItem({ comment, isOwn, onDelete }: CommentItemProps) {
       <Avatar
         src={comment.author.profile_img_url}
         alt={comment.author.nickname}
-        size="sm"
+        size="lg"
       />
       <div className="min-w-0 flex-1 border-b border-gray-200 pb-4">
         <div className="mb-1 flex items-center gap-2">
@@ -104,7 +104,7 @@ export function CommentItem({ comment, isOwn, onDelete }: CommentItemProps) {
             </>
           )}
         </div>
-        <p className="text-text-body text-sm leading-relaxed break-words">
+        <p className="text-text-body text-sm leading-relaxed wrap-break-word">
           {parseContent(comment.content, comment.tagged_users)}
         </p>
       </div>

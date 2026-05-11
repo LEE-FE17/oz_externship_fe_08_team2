@@ -11,11 +11,15 @@ export function useCreatePost() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (body: CreatePostRequest) => {
-      const { data } = await api.post<CreatePostResponse>('/api/v1/posts', body)
+      const { data } = await api.post<CreatePostResponse>(
+        '/api/v1/posts/',
+        body
+      )
       return data
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['posts', 'list'] })
+      queryClient.removeQueries({ queryKey: ['posts', 'detail', data.pk] })
     },
   })
 }

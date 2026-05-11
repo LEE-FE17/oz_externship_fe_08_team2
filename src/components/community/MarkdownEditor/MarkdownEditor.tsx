@@ -283,6 +283,7 @@ const strikethroughCommand: ICommand = {
 }
 
 const BG_PALETTE_COLORS = ['#ffffff', ...PALETTE_COLORS]
+const TEXT_PALETTE_COLORS = ['#ffffff', ...PALETTE_COLORS]
 
 const bgColorCommand: ICommand = {
   name: 'bg-color',
@@ -415,11 +416,17 @@ const textColorCommand: ICommand = {
   ),
   children: ({ close, getState, textApi }) => (
     <div className="color-palette">
-      {PALETTE_COLORS.map((color) => (
+      {TEXT_PALETTE_COLORS.map((color) => (
         <div
           key={color}
           className="color-swatch"
-          style={{ background: color }}
+          style={{
+            background: color,
+            border:
+              color === '#ffffff'
+                ? '1px solid #d1d5db'
+                : '1px solid rgba(0,0,0,0.12)',
+          }}
           title={color}
           onClick={() => {
             const state = getState?.() as false | EditorFullState | undefined
@@ -791,7 +798,7 @@ export function MarkdownEditor({
           api.replaceSelection(`![${file.name}](${objectUrl})`)
           try {
             const serverUrl = await onImageUpload(file)
-            onChange(valueRef.current.replaceAll(objectUrl, serverUrl))
+            handleChange(valueRef.current.replaceAll(objectUrl, serverUrl))
             URL.revokeObjectURL(objectUrl)
             objectUrlsRef.current.delete(objectUrl)
           } catch {
@@ -805,7 +812,7 @@ export function MarkdownEditor({
         input.click()
       },
     }),
-    [onImageUpload, onChange]
+    [onImageUpload, handleChange]
   )
 
   const editorCommands: ICommand[] = useMemo(

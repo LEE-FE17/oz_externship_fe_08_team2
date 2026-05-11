@@ -9,6 +9,7 @@ interface RetryConfig extends InternalAxiosRequestConfig {
   _retry?: boolean
 }
 
+<<<<<<< feature/markdown-editor
 const redirectToLogin = () => {
   useAuthStore.getState().logout()
   localStorage.removeItem('accessToken')
@@ -22,6 +23,9 @@ export function setupInterceptors(
   instance: AxiosInstance,
   baseInstance: AxiosInstance
 ): void {
+=======
+export function setupInterceptors(instance: AxiosInstance): void {
+>>>>>>> dev
   instance.interceptors.request.use(
     (config) => {
       const token = localStorage.getItem('accessToken')
@@ -46,18 +50,31 @@ export function setupInterceptors(
         originalConfig._retry = true
 
         try {
+<<<<<<< feature/markdown-editor
           const { data } = await baseInstance.post(
             '/api/v1/accounts/me/refresh',
             {}
+=======
+          const { data } = await axios.post(
+            '/api/v1/accounts/me/refresh',
+            {},
+            {
+              baseURL: import.meta.env.VITE_API_BASE_URL,
+              withCredentials: true,
+            }
+>>>>>>> dev
           )
 
           const newToken = data.access_token
           localStorage.setItem('accessToken', newToken)
 
-          originalConfig.headers.Authorization = `Bearer ${newToken}`
+          if (originalConfig.headers) {
+            originalConfig.headers.Authorization = `Bearer ${newToken}`
+          }
           return instance(originalConfig)
         } catch (refreshError) {
-          redirectToLogin()
+          useAuthStore.getState().logout()
+          localStorage.removeItem('accessToken')
           return Promise.reject(refreshError)
         }
       }

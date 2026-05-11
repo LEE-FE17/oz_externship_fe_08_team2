@@ -34,12 +34,11 @@ const CATEGORY_TABS: {
 }[] = [
   { value: 'all', label: '전체', categoryId: undefined },
   { value: 'popular', label: '인기글', categoryId: undefined },
-  { value: 'notice', label: '공지사항', categoryId: 2 },
-  { value: 'free', label: '자유게시판', categoryId: 3 },
-  { value: 'daily', label: '일상 공유', categoryId: 4 },
-  { value: 'dev', label: '개발 지식 공유', categoryId: 5 },
-  { value: 'job', label: '취업 정보 공유', categoryId: 6 },
-  { value: 'recruit', label: '프로젝트 구인', categoryId: 7 },
+  { value: 'notice', label: '공지사항', categoryId: 1 },
+  { value: 'free', label: '자유게시판', categoryId: 2 },
+  { value: 'concern', label: '고민 상담', categoryId: 3 },
+  { value: 'recruit', label: '구인/협업', categoryId: 4 },
+  { value: 'resource', label: '자료공유', categoryId: 5 },
 ]
 
 function PencilIcon() {
@@ -106,6 +105,7 @@ function getPageRange(current: number, total: number): number[] {
 export function CommunityListPage() {
   const navigate = useNavigate()
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
+  const isInitialized = useAuthStore((s) => s.isInitialized)
   const tabsScrollRef = useRef<HTMLDivElement>(null)
 
   const [searchType, setSearchType] = useState<PostSearchFilter | undefined>(
@@ -145,8 +145,8 @@ export function CommunityListPage() {
   }
 
   const handleWriteClick = () => {
-    if (!isAuthenticated) {
-      navigate('/login')
+    if (isInitialized && !isAuthenticated) {
+      navigate(ROUTES.AUTH.LOGIN || ROUTES.COMMUNITY.LIST)
       return
     }
     navigate(ROUTES.COMMUNITY.WRITE)
@@ -173,7 +173,7 @@ export function CommunityListPage() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-10">
+    <div className="mx-auto w-full max-w-225 px-15 py-10">
       {/* 페이지 타이틀 */}
       <h1 className="text-text-heading text-3xl font-bold tracking-tight">
         커뮤니티
@@ -207,9 +207,9 @@ export function CommunityListPage() {
       </div>
 
       {/* 카테고리 탭 + 정렬 */}
-      <div className="mt-8 grid w-full grid-cols-[1fr_8rem] items-center gap-4">
+      <div className="border-border-base mt-5 grid w-full grid-cols-[1fr_8rem] items-center gap-4 border-b pb-3">
         {/* 탭 스크롤 영역 */}
-        <div className="border-border-base flex items-center border-b">
+        <div className="flex items-center">
           {/* 왼쪽 화살표 */}
           <button
             type="button"
@@ -235,7 +235,7 @@ export function CommunityListPage() {
                 aria-selected={category === tab.value}
                 onClick={() => handleCategoryChange(tab.value)}
                 className={[
-                  'shrink-0 cursor-pointer rounded-md px-4 py-1.5 text-sm font-medium transition-colors duration-150 outline-none',
+                  'h-10.5 shrink-0 cursor-pointer rounded-md px-3.5 text-sm font-medium transition-colors duration-150 outline-none',
                   category === tab.value
                     ? 'bg-primary-100 text-primary'
                     : 'text-text-muted hover:text-text-body',
@@ -268,7 +268,7 @@ export function CommunityListPage() {
       </div>
 
       {/* 글 목록 */}
-      <div className="min-h-96 w-full">
+      <div className="flex min-h-96 w-full flex-col gap-10">
         {isLoading && (
           <p className="text-text-muted py-16 text-center text-sm">
             불러오는 중...
@@ -299,61 +299,63 @@ export function CommunityListPage() {
 
       {/* 페이지네이션 */}
       {totalPages > 1 && (
-        <div className="mt-8 flex w-full items-center justify-center gap-1">
-          <button
-            type="button"
-            onClick={() => setPage(1)}
-            disabled={page === 1}
-            aria-label="첫 페이지"
-            className="text-text-muted flex h-8 w-8 items-center justify-center rounded text-sm transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            «
-          </button>
-          <button
-            type="button"
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
-            disabled={page === 1}
-            aria-label="이전 페이지"
-            className="text-text-muted flex h-8 w-8 items-center justify-center rounded text-sm transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            ‹
-          </button>
-
-          {getPageRange(page, totalPages).map((p) => (
+        <div className="border-border-base mt-13 border-t">
+          <div className="flex w-full items-center justify-center gap-1 py-8">
             <button
-              key={p}
               type="button"
-              onClick={() => setPage(p)}
-              aria-current={p === page ? 'page' : undefined}
-              className={[
-                'flex h-8 w-8 items-center justify-center rounded text-sm font-medium transition-colors',
-                p === page
-                  ? 'bg-primary text-white'
-                  : 'text-text-muted hover:bg-gray-200',
-              ].join(' ')}
+              onClick={() => setPage(1)}
+              disabled={page === 1}
+              aria-label="첫 페이지"
+              className="text-text-muted flex items-center justify-center rounded px-2.5 py-3.25 text-[20px] leading-5 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:text-[#BDBDBD]"
             >
-              {p}
+              «
             </button>
-          ))}
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page === 1}
+              aria-label="이전 페이지"
+              className="text-text-muted flex items-center justify-center rounded px-2.5 py-3.25 text-[20px] leading-5 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:text-[#BDBDBD]"
+            >
+              ‹
+            </button>
 
-          <button
-            type="button"
-            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-            disabled={page === totalPages}
-            aria-label="다음 페이지"
-            className="text-text-muted flex h-8 w-8 items-center justify-center rounded text-sm transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            ›
-          </button>
-          <button
-            type="button"
-            onClick={() => setPage(totalPages)}
-            disabled={page === totalPages}
-            aria-label="마지막 페이지"
-            className="text-text-muted flex h-8 w-8 items-center justify-center rounded text-sm transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            »
-          </button>
+            {getPageRange(page, totalPages).map((p) => (
+              <button
+                key={p}
+                type="button"
+                onClick={() => setPage(p)}
+                aria-current={p === page ? 'page' : undefined}
+                className={[
+                  'flex h-8 w-8 items-center justify-center rounded text-sm font-medium transition-colors',
+                  p === page
+                    ? 'bg-primary text-white'
+                    : 'text-text-muted hover:bg-gray-200',
+                ].join(' ')}
+              >
+                {p}
+              </button>
+            ))}
+
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={page === totalPages}
+              aria-label="다음 페이지"
+              className="text-text-muted flex items-center justify-center rounded px-2.5 py-3.25 text-[20px] leading-5 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:text-[#BDBDBD]"
+            >
+              ›
+            </button>
+            <button
+              type="button"
+              onClick={() => setPage(totalPages)}
+              disabled={page === totalPages}
+              aria-label="마지막 페이지"
+              className="text-text-muted flex items-center justify-center rounded px-2.5 py-3.25 text-[20px] leading-5 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:text-[#BDBDBD]"
+            >
+              »
+            </button>
+          </div>
         </div>
       )}
     </div>

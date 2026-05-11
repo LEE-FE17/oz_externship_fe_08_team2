@@ -15,8 +15,6 @@ export interface PostDetailResponse {
   like_count: number
   created_at: string
   updated_at: string
-  /** MSW 확장 필드 */
-  is_liked?: boolean
-  /** MSW 확장 필드 */
-  comment_count?: number
+  is_liked: boolean
+  comment_count: number
 }
