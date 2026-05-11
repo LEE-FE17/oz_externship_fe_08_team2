@@ -11,6 +11,12 @@ import App from './App'
 //     return worker.start({ onUnhandledRequest: 'bypass' })
 //   }
 // }
+// async function enableMocking() {
+//   if (import.meta.env.DEV) {
+//     const { worker } = await import('./mocks/browser')
+//     return worker.start({ onUnhandledRequest: 'bypass' })
+//   }
+// }
 
 function renderApp() {
   createRoot(document.getElementById('root')!).render(
@@ -30,4 +36,5 @@ function renderApp() {
 //     console.error('MSW 초기화 실패:', error)
 //     renderApp()
 //   })
+
 renderApp()
