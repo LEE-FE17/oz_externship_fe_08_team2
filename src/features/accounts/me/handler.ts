@@ -2,9 +2,9 @@ import { http, HttpResponse } from 'msw'
 import type { MeResponse } from './types'
 
 export const meHandlers = [
-  http.get('/api/v1/accounts/me/', () => {
-    const token = localStorage.getItem('accessToken')
-    if (!token) {
+  http.get('/api/v1/accounts/me/', ({ request }) => {
+    const authHeader = request.headers.get('Authorization')
+    if (!authHeader?.startsWith('Bearer ')) {
       return HttpResponse.json({ detail: 'Unauthorized' }, { status: 401 })
     }
     return HttpResponse.json<MeResponse>({
