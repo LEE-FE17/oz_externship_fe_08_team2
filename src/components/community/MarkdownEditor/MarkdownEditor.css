@@ -1,4 +1,4 @@
-/* ── MDEditor 외부 border/shadow 제거 ── */
+/* ── MDEditor CSS 변수 오버라이드: 외부 border/shadow 제거 ── */
 .post-editor-wrap .w-md-editor {
   --md-editor-box-shadow-color: transparent;
   box-shadow: none !important;
@@ -34,7 +34,7 @@
   background-color: #fafafa !important;
 }
 
-/* ── 툴바 ── */
+/* ── 툴바 전체 컨테이너 ── */
 .post-editor-wrap .w-md-editor-toolbar {
   display: flex !important;
   flex-direction: column !important;
@@ -47,6 +47,7 @@
   overflow: visible !important;
 }
 
+/* Row 1 (commands UL), Row 2 (extraCommands UL) 각각 한 줄 전체 사용 */
 .post-editor-wrap .w-md-editor-toolbar > ul {
   display: flex !important;
   flex-direction: row !important;
@@ -61,6 +62,7 @@
   box-sizing: border-box !important;
 }
 
+/* 툴바 divider */
 .post-editor-wrap .w-md-editor-toolbar-divider {
   background-color: #cdcdcd !important;
   height: 16px !important;
@@ -68,12 +70,14 @@
   margin: 0 4px !important;
 }
 
+/* 툴바 버튼 */
 .post-editor-wrap .w-md-editor-toolbar li {
   display: inline-flex !important;
   align-items: center !important;
   position: relative !important;
 }
 
+/* ── 드롭다운 자식 패널: 버튼 아래로 표시 ── */
 .post-editor-wrap .w-md-editor-toolbar-child {
   top: 100% !important;
   left: 0 !important;
@@ -96,4 +100,160 @@
 .post-editor-wrap .w-md-editor-toolbar li > button[data-inactive='true'] {
   pointer-events: none !important;
   opacity: 0.3 !important;
+}
+
+/* ── Tab 들여쓰기로 생성된 인덴티드 코드블록 배경 제거 ── */
+/* pre:not([class]) = 언어 미지정 코드블록 (4칸 들여쓰기 또는 언어 없는 펜싱) */
+.post-editor-wrap .wmde-markdown pre:not([class]) {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* ── 목록 스타일 복원 ── */
+.post-editor-wrap .wmde-markdown ul {
+  list-style-type: disc !important;
+  padding-left: 2em !important;
+  margin: 0.5em 0 !important;
+}
+
+.post-editor-wrap .wmde-markdown ol {
+  list-style-type: decimal !important;
+  padding-left: 2em !important;
+  margin: 0.5em 0 !important;
+}
+
+.post-editor-wrap .wmde-markdown li {
+  display: list-item !important;
+}
+
+.post-editor-wrap .wmde-markdown ul ul {
+  list-style-type: circle !important;
+}
+
+.post-editor-wrap .wmde-markdown ul ul ul {
+  list-style-type: square !important;
+}
+
+.post-editor-wrap .wmde-markdown ol ol {
+  list-style-type: lower-alpha !important;
+}
+
+.post-editor-wrap .wmde-markdown ol ol ol {
+  list-style-type: lower-roman !important;
+}
+
+/* ── 헤딩 스타일 복원 ── */
+.post-editor-wrap .wmde-markdown h1 {
+  font-size: 2em !important;
+  font-weight: 700 !important;
+  margin: 0.67em 0 !important;
+  border-bottom: none !important;
+}
+.post-editor-wrap .wmde-markdown h2 {
+  font-size: 1.5em !important;
+  font-weight: 700 !important;
+  margin: 0.75em 0 !important;
+  border-bottom: none !important;
+}
+.post-editor-wrap .wmde-markdown h3 {
+  font-size: 1.25em !important;
+  font-weight: 600 !important;
+  margin: 0.83em 0 !important;
+}
+.post-editor-wrap .wmde-markdown h4 {
+  font-size: 1em !important;
+  font-weight: 600 !important;
+  margin: 1em 0 !important;
+}
+.post-editor-wrap .wmde-markdown h5 {
+  font-size: 0.875em !important;
+  font-weight: 600 !important;
+  margin: 1.17em 0 !important;
+}
+.post-editor-wrap .wmde-markdown h6 {
+  font-size: 0.85em !important;
+  font-weight: 600 !important;
+  margin: 1.33em 0 !important;
+  color: #6b7280 !important;
+}
+
+/* ── 드롭다운 팝업 ── */
+.toolbar-popup {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 4px;
+  width: max-content;
+  z-index: 200;
+}
+
+.toolbar-popup button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 5px 10px;
+  font-size: 13px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 4px;
+  white-space: nowrap;
+  color: #374151;
+}
+
+.toolbar-popup button:hover {
+  background: #f1f5f9;
+}
+
+/* ── 색상 팔레트 ── */
+.color-palette {
+  display: grid;
+  grid-template-columns: repeat(5, 22px);
+  gap: 3px;
+  padding: 7px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.color-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 3px;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  transition: transform 0.1s;
+}
+
+.color-swatch:hover {
+  transform: scale(1.2);
+  border-color: #64748b;
+}
+
+/* ── Notion 스타일 리스트 ── */
+.post-editor-wrap .wmde-markdown ul {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  margin: 0.25em 0;
+}
+
+.post-editor-wrap .wmde-markdown ul ul {
+  list-style-type: circle;
+}
+
+.post-editor-wrap .wmde-markdown ul ul ul {
+  list-style-type: square;
+}
+
+.post-editor-wrap .wmde-markdown ol {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+  margin: 0.25em 0;
+}
+
+.post-editor-wrap .wmde-markdown li {
+  margin: 0.1em 0;
 }
