@@ -1,9 +1,10 @@
 import { http, HttpResponse } from 'msw'
+import { apiUrl } from '@/mocks/url'
 import type { PostLikeResponse } from './types'
 import { likeMockStore } from '../mockStore'
 
 export const postLikeHandlers = [
-  http.post('/api/v1/posts/:post_id/like', ({ params }) => {
+  http.post(apiUrl('/api/v1/posts/:post_id/like'), ({ params }) => {
     const postId = Number(params.post_id)
     const newCount = likeMockStore.getLikeCount(postId) + 1
     likeMockStore.likeCountMap.set(postId, newCount)
@@ -16,7 +17,7 @@ export const postLikeHandlers = [
     }
     return HttpResponse.json(body)
   }),
-  http.delete('/api/v1/posts/:post_id/like/cancel', ({ params }) => {
+  http.delete(apiUrl('/api/v1/posts/:post_id/like/cancel'), ({ params }) => {
     const postId = Number(params.post_id)
     const newCount = Math.max(0, likeMockStore.getLikeCount(postId) - 1)
     likeMockStore.likeCountMap.set(postId, newCount)

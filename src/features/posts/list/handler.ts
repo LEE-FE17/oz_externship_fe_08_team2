@@ -1,4 +1,5 @@
 import { http, HttpResponse } from 'msw'
+import { apiUrl } from '@/mocks/url'
 import type { PostListItem, PostListResponse, PostSortOption } from './types'
 import { postMockStore } from '../mockStore'
 
@@ -146,7 +147,7 @@ const SORT_FNS: Record<PostSortOption, SortFn> = {
 }
 
 export const postListHandlers = [
-  http.get('/api/v1/posts/', ({ request }) => {
+  http.get(apiUrl('/api/v1/posts/'), ({ request }) => {
     const url = new URL(request.url)
     const page = Math.max(1, Number(url.searchParams.get('page') ?? '1'))
     const pageSize = Math.max(

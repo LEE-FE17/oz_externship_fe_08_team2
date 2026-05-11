@@ -1,9 +1,10 @@
 import { delay, http, HttpResponse } from 'msw'
 import { postMockStore } from '../mockStore'
+import { apiUrl } from '@/mocks/url'
 import type { PostDeleteResponse } from './types'
 
 export const postDeleteHandlers = [
-  http.delete('/api/v1/posts/:post_id', async ({ params }) => {
+  http.delete(apiUrl('/api/v1/posts/:post_id'), async ({ params }) => {
     await delay(300)
     const postId = Number(params.post_id)
 

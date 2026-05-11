@@ -1,4 +1,5 @@
 import { delay, http, HttpResponse } from 'msw'
+import { apiUrl } from '@/mocks/url'
 import type { PostDetailResponse } from './types'
 import { likeMockStore, postMockStore } from '../mockStore'
 
@@ -19,7 +20,7 @@ const dummyPostBase = {
 }
 
 export const postDetailHandlers = [
-  http.get('/api/v1/posts/:post_id', async ({ params }) => {
+  http.get(apiUrl('/api/v1/posts/:post_id'), async ({ params }) => {
     await delay(300)
     const postId = Number(params.post_id)
 
