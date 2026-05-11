@@ -24,7 +24,16 @@ export function useInitAuth() {
         })
       })
       .catch(() => {
-        useAuthStore.getState().setInitialized()
+        if (import.meta.env.DEV) {
+          useAuthStore.getState().login({
+            id: 99,
+            nickname: '테스트유저',
+            email: 'test@example.com',
+            profileImage: null,
+          })
+        } else {
+          useAuthStore.getState().setInitialized()
+        }
       })
   }, [])
 }
