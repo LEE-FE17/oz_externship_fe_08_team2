@@ -1,3 +1,4 @@
+import { Routes, Route, Navigate } from 'react-router'
 import { DefaultLayout } from '@/components'
 import {
   CommunityListPage,
@@ -26,6 +27,7 @@ export function RouterProvider() {
         </Route>
 
         <Route path="showcase" element={<ComponentShowcase />} />
+        <Route path="*" element={<Navigate to="/community" replace />} />
       </Route>
     </Routes>
   )
