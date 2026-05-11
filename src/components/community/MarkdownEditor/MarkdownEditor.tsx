@@ -820,6 +820,21 @@ export function MarkdownEditor({
                   textarea.selectionEnd = start + insert.length
                 })
               }
+              if (e.key === 'Tab') {
+                e.preventDefault()
+                const textarea = e.currentTarget
+                const start = textarea.selectionStart
+                const end = textarea.selectionEnd
+                const insert = '  '
+                const current = textarea.value
+                const next =
+                  current.substring(0, start) + insert + current.substring(end)
+                handleChange(next)
+                requestAnimationFrame(() => {
+                  textarea.selectionStart = start + insert.length
+                  textarea.selectionEnd = start + insert.length
+                })
+              }
             },
           }}
         />
