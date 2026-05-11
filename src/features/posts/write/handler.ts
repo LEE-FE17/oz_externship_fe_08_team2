@@ -1,4 +1,5 @@
 import { http, HttpResponse } from 'msw'
+import { apiUrl } from '@/mocks/url'
 import { postMockStore } from '../mockStore'
 
 const mockS3Store = new Map<
@@ -7,7 +8,7 @@ const mockS3Store = new Map<
 >()
 
 export const writeHandlers = [
-  http.post('/api/v1/posts/', async ({ request }) => {
+  http.post(apiUrl('/api/v1/posts/'), async ({ request }) => {
     const body = (await request.json()) as Record<string, unknown>
     if (!body.title || !body.content || !body.category_id) {
       return HttpResponse.json(
@@ -26,7 +27,7 @@ export const writeHandlers = [
     )
   }),
 
-  http.post('/api/v1/posts/presigned-url', async ({ request }) => {
+  http.post(apiUrl('/api/v1/posts/presigned-url'), async ({ request }) => {
     const body = (await request.json()) as { file_name?: string }
     const fileName = body.file_name ?? 'image.png'
     const encoded = encodeURIComponent(fileName)

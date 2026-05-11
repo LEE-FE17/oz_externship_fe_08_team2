@@ -1,8 +1,9 @@
 import { http, HttpResponse } from 'msw'
+import { apiUrl } from '@/mocks/url'
 import { postMockStore, MOCK_CATEGORIES } from '../mockStore'
 
 export const editHandlers = [
-  http.put('/api/v1/posts/:postId', async ({ request, params }) => {
+  http.put(apiUrl('/api/v1/posts/:postId'), async ({ request, params }) => {
     const body = (await request.json()) as Record<string, unknown>
     if (!body.title || !body.content || !body.category_id) {
       return HttpResponse.json(
