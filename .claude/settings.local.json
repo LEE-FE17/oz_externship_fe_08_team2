@@ -26,7 +26,11 @@
       "Bash(npx tsc:*)",
       "Bash(pnpm lint:*)",
       "Bash(npx eslint:*)",
-      "Skill(git-sync)"
+      "Skill(git-sync)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\이용기\\\\Desktop\\\\2팀\\\\oz_externship_fe_08_team2\\\\src\" -Recurse -Directory)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Remove-Item -Recurse -Force \"c:\\\\Users\\\\이용기\\\\Desktop\\\\2팀\\\\oz_externship_fe_08_team2\\\\src\\\\features\\\\accounts\" -ErrorAction SilentlyContinue)",
+      "Bash(Write-Host \"done\")"
     ]
   },
   "hooks": {
