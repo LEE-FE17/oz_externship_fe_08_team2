@@ -2,7 +2,7 @@ import { http, HttpResponse } from 'msw'
 import { postMockStore } from '../mockStore'
 
 export const writeHandlers = [
-  http.post('/api/v1/posts', async ({ request }) => {
+  http.post('/api/v1/posts/', async ({ request }) => {
     const body = (await request.json()) as Record<string, unknown>
     if (!body.title || !body.content || !body.category_id) {
       return HttpResponse.json(
