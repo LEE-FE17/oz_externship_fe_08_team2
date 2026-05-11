@@ -13,7 +13,7 @@ interface MeResponse {
 export function useInitAuth() {
   useEffect(() => {
     api
-      .get<MeResponse>('/api/v1/accounts/me')
+      .get<MeResponse>('/api/v1/accounts/me/')
       .then(({ data }) => {
         useAuthStore.getState().login({
           id: data.id,
