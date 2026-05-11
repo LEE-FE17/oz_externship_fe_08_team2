@@ -16,7 +16,7 @@ function AuthInitializer() {
         email: data.email,
         profileImage: data.profile_img_url ?? null,
       })
-    } else if (isError || !localStorage.getItem('accessToken')) {
+    } else if (isError) {
       setInitialized()
     }
   }, [data, login, isError, setInitialized])
