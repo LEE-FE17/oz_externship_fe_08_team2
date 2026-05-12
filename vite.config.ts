@@ -17,6 +17,7 @@ export default defineConfig({
     },
   },
   server: {
+    open: true,
     proxy: {
       '/api': {
         target: 'https://api.ozcodingschool.site',
