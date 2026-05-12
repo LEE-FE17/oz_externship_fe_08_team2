@@ -6,8 +6,8 @@ export interface ProfileDropdownProps {
   onClose: () => void
   nickname: string
   email: string
-  onEnroll?: () => void
-  onMypage?: () => void
+  enrollHref?: string
+  mypageHref?: string
   onLogout?: () => void
 }
 
@@ -16,8 +16,8 @@ export function ProfileDropdown({
   onClose,
   nickname,
   email,
-  onEnroll,
-  onMypage,
+  enrollHref,
+  mypageHref,
   onLogout,
 }: ProfileDropdownProps) {
   const ref = useRef<HTMLDivElement>(null)
@@ -56,24 +56,20 @@ export function ProfileDropdown({
 
         {/* Menu */}
         <nav className="flex flex-col gap-1">
-          <Button
-            variant="ghost"
-            size="sm"
-            fullWidth
-            onClick={onEnroll}
-            className="text-text-heading hover:text-primary h-12 justify-start"
+          <a
+            href={enrollHref}
+            onClick={onClose}
+            className="hover:text-primary hover:bg-bg-accent text-text-heading inline-flex h-12 w-full items-center justify-start rounded-sm px-3 text-sm font-medium tracking-tight transition-colors duration-150"
           >
             수강생 등록
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            fullWidth
-            onClick={onMypage}
-            className="text-text-heading hover:text-primary h-12 justify-start tracking-tight"
+          </a>
+          <a
+            href={mypageHref}
+            onClick={onClose}
+            className="hover:text-primary hover:bg-bg-accent text-text-heading inline-flex h-12 w-full items-center justify-start rounded-sm px-3 text-sm font-medium tracking-tight transition-colors duration-150"
           >
             마이페이지
-          </Button>
+          </a>
           <Button
             variant="ghost"
             size="sm"

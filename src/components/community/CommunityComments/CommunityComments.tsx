@@ -80,7 +80,7 @@ export function CommunityComments({ postId }: Props) {
           if (status === 401) {
             setSubmitErrorMessage('로그인이 필요합니다.')
             setSubmitError(true)
-            navigate(ROUTES.AUTH.LOGIN, { replace: true })
+            window.location.href = ROUTES.AUTH.LOGIN
           } else if (status === 404) {
             setSubmitErrorMessage('존재하지 않는 게시물입니다.')
             setSubmitError(true)
@@ -201,7 +201,7 @@ export function CommunityComments({ postId }: Props) {
           if (action === 'navigate-list') {
             navigate(ROUTES.COMMUNITY.LIST, { replace: true })
           } else if (action === 'navigate-login') {
-            navigate(ROUTES.AUTH.LOGIN, { replace: true })
+            window.location.href = ROUTES.AUTH.LOGIN
           } else if (action === 'refresh') {
             queryClient.invalidateQueries({
               queryKey: ['posts', postId, 'comments'],

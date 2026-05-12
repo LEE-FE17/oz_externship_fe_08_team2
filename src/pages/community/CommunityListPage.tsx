@@ -147,7 +147,7 @@ export function CommunityListPage() {
 
   const handleWriteClick = () => {
     if (isInitialized && !isAuthenticated) {
-      navigate(ROUTES.AUTH.LOGIN || ROUTES.COMMUNITY.LIST)
+      window.location.href = ROUTES.AUTH.LOGIN
       return
     }
     navigate(ROUTES.COMMUNITY.WRITE)

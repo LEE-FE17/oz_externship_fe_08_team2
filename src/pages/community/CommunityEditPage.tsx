@@ -50,9 +50,9 @@ export function CommunityEditPage() {
 
   useEffect(() => {
     if (isInitialized && !isAuthenticated) {
-      navigate(ROUTES.AUTH.LOGIN || ROUTES.COMMUNITY.LIST, { replace: true })
+      window.location.href = ROUTES.AUTH.LOGIN
     }
-  }, [isInitialized, isAuthenticated, navigate])
+  }, [isInitialized, isAuthenticated])
 
   useEffect(() => {
     if (isPostError) {
