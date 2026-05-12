@@ -15,7 +15,6 @@ export const editHandlers = [
     const categoryId = Number(body.category_id)
     const category = MOCK_CATEGORIES.find((c) => c.id === categoryId)
 
-    // postMockStore에 있는 게시글이면 업데이트
     const existing = postMockStore.get(postId)
     if (existing) {
       postMockStore.posts.set(postId, {

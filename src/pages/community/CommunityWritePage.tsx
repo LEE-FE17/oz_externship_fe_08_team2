@@ -30,9 +30,9 @@ export function CommunityWritePage() {
 
   useEffect(() => {
     if (isInitialized && !isAuthenticated) {
-      navigate(ROUTES.AUTH.LOGIN || ROUTES.COMMUNITY.LIST, { replace: true })
+      window.location.href = ROUTES.AUTH.LOGIN
     }
-  }, [isInitialized, isAuthenticated, navigate])
+  }, [isInitialized, isAuthenticated])
 
   const {
     data: categories = [],

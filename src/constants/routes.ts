@@ -1,33 +1,34 @@
+const MY_SITE = 'https://my.ozcodingschool.site'
+
 export const ROUTES = {
-  /* Todo: 도메인 추가 후 수정 */
-  HOME: '',
+  HOME: MY_SITE,
 
   AUTH: {
-    LOGIN: '',
+    LOGIN: `${MY_SITE}/login`,
   },
 
   SIGNUP: {
-    SELECT: '',
-    FORM: '',
+    SELECT: `${MY_SITE}/signup`,
+    FORM: `${MY_SITE}/signup`,
   },
 
   MYPAGE: {
-    HOME: '',
-    EDIT: '',
-    CHANGE_PASSWORD: '',
-    QUIZ: '',
+    HOME: `${MY_SITE}/mypage`,
+    EDIT: `${MY_SITE}/mypage/edit`,
+    CHANGE_PASSWORD: `${MY_SITE}/mypage/change-password`,
+    QUIZ: `${MY_SITE}/mypage/quiz`,
   },
 
   QUIZ: {
-    EXAM: '',
-    RESULT: '',
+    EXAM: `${MY_SITE}/quiz`,
+    RESULT: `${MY_SITE}/quiz/result`,
   },
 
   QNA: {
-    LIST: '',
-    WRITE: '',
-    DETAIL: '',
-    EDIT: '',
+    LIST: `${MY_SITE}/qna`,
+    WRITE: `${MY_SITE}/qna/write`,
+    DETAIL: `${MY_SITE}/qna`,
+    EDIT: `${MY_SITE}/qna`,
   },
 
   COMMUNITY: {
