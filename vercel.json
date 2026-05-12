@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/community",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/community/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
