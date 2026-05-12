@@ -685,6 +685,46 @@ const clearFormatCmd: ICommand = {
   },
 }
 
+const boldCommand: ICommand = {
+  ...mdCommands.bold,
+  execute: (state, api) => {
+    const sel = state.selectedText
+    if (sel.startsWith('***') && sel.endsWith('***') && sel.length >= 6) {
+      api.replaceSelection('*' + sel.slice(3, -3) + '*')
+    } else if (
+      sel.startsWith('**') &&
+      !sel.startsWith('***') &&
+      sel.endsWith('**') &&
+      !sel.endsWith('***') &&
+      sel.length >= 4
+    ) {
+      api.replaceSelection(sel.slice(2, -2))
+    } else {
+      api.replaceSelection(`**${sel}**`)
+    }
+  },
+}
+
+const italicCommand: ICommand = {
+  ...mdCommands.italic,
+  execute: (state, api) => {
+    const sel = state.selectedText
+    if (sel.startsWith('***') && sel.endsWith('***') && sel.length >= 6) {
+      api.replaceSelection('**' + sel.slice(3, -3) + '**')
+    } else if (
+      sel.startsWith('*') &&
+      !sel.startsWith('**') &&
+      sel.endsWith('*') &&
+      !sel.endsWith('**') &&
+      sel.length >= 2
+    ) {
+      api.replaceSelection(sel.slice(1, -1))
+    } else {
+      api.replaceSelection(`*${sel}*`)
+    }
+  },
+}
+
 const UNDO_LIMIT = 50
 
 export function MarkdownEditor({
@@ -869,6 +909,129 @@ export function MarkdownEditor({
                 const start = textarea.selectionStart
                 const end = textarea.selectionEnd
                 const insert = '<br>\n'
+                const current = textarea.value
+                const next =
+                  current.substring(0, start) + insert + current.substring(end)
+                handleChange(next)
+                requestAnimationFrame(() => {
+                  textarea.selectionStart = start + insert.length
+                  textarea.selectionEnd = start + insert.length
+                })
+              }
+              if (!e.shiftKey && e.key === 'Enter') {
+                const textarea = e.currentTarget
+                const start = textarea.selectionStart
+                const end = textarea.selectionEnd
+                const text = textarea.value
+                const lineStart = text.lastIndexOf('\n', start - 1) + 1
+                const lineNlPos = text.indexOf('\n', lineStart)
+                const lineEnd = lineNlPos === -1 ? text.length : lineNlPos
+                const currentLine = text.substring(lineStart, lineEnd)
+                if (/^>/.test(currentLine)) {
+                  e.preventDefault()
+                  if (!/^>\s*$/.test(currentLine)) {
+                    const insert = '\n> '
+                    const next =
+                      text.substring(0, start) + insert + text.substring(end)
+                    handleChange(next)
+                    requestAnimationFrame(() => {
+                      textarea.selectionStart = start + insert.length
+                      textarea.selectionEnd = start + insert.length
+                    })
+                  } else {
+                    const prevLineEnd = lineStart - 1
+                    const isPrevEmptyBlockquote =
+                      prevLineEnd >= 0 &&
+                      /^>\s*$/.test(
+                        text.substring(
+                          text.lastIndexOf('\n', prevLineEnd - 1) + 1,
+                          prevLineEnd
+                        )
+                      )
+                    if (isPrevEmptyBlockquote) {
+                      const next =
+                        text.substring(0, lineStart) +
+                        text.substring(lineStart + currentLine.length)
+                      handleChange(next)
+                      requestAnimationFrame(() => {
+                        textarea.selectionStart = lineStart
+                        textarea.selectionEnd = lineStart
+                      })
+                    } else {
+                      const insert = '\n> '
+                      const next =
+                        text.substring(0, start) + insert + text.substring(end)
+                      handleChange(next)
+                      requestAnimationFrame(() => {
+                        textarea.selectionStart = start + insert.length
+                        textarea.selectionEnd = start + insert.length
+                      })
+                    }
+                  }
+                } else if (/^\s+[-*]\s*/.test(currentLine)) {
+                  e.preventDefault()
+                  const listMatch = currentLine.match(/^(\s+)([-*])\s*/)
+                  if (listMatch) {
+                    const indent = listMatch[1]
+                    const marker = listMatch[2]
+                    const prefix = `${indent}${marker} `
+                    const isEmptyItem = /^\s+[-*]\s*$/.test(currentLine)
+                    if (!isEmptyItem) {
+                      const insert = `\n${prefix}`
+                      const next =
+                        text.substring(0, start) + insert + text.substring(end)
+                      handleChange(next)
+                      requestAnimationFrame(() => {
+                        textarea.selectionStart = start + insert.length
+                        textarea.selectionEnd = start + insert.length
+                      })
+                    } else {
+                      const prevLineEnd = lineStart - 1
+                      const isPrevEmptyItem =
+                        prevLineEnd >= 0 &&
+                        /^\s+[-*]\s*$/.test(
+                          text.substring(
+                            text.lastIndexOf('\n', prevLineEnd - 1) + 1,
+                            prevLineEnd
+                          )
+                        )
+                      if (isPrevEmptyItem) {
+                        const newIndent = indent.slice(2)
+                        const replacement = newIndent
+                          ? `${newIndent}${marker} `
+                          : `${marker} `
+                        const next =
+                          text.substring(0, lineStart) +
+                          replacement +
+                          text.substring(lineStart + currentLine.length)
+                        handleChange(next)
+                        requestAnimationFrame(() => {
+                          textarea.selectionStart =
+                            lineStart + replacement.length
+                          textarea.selectionEnd = lineStart + replacement.length
+                        })
+                      } else {
+                        const insert = `\n${prefix}`
+                        const next =
+                          text.substring(0, start) +
+                          insert +
+                          text.substring(end)
+                        handleChange(next)
+                        requestAnimationFrame(() => {
+                          textarea.selectionStart = start + insert.length
+                          textarea.selectionEnd = start + insert.length
+                        })
+                      }
+                    }
+                  }
+                }
+              }
+              if (e.key === 'Tab') {
+                e.preventDefault()
+                const textarea = e.currentTarget
+                const start = textarea.selectionStart
+                const end = textarea.selectionEnd
+                const insert = '  '
                 const current = textarea.value
                 const next =
                   current.substring(0, start) + insert + current.substring(end)
