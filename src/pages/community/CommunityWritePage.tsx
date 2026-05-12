@@ -35,12 +35,10 @@ export function CommunityWritePage() {
   }, [isInitialized, isAuthenticated, navigate])
 
   const {
-    data: rawCategories = [],
+    data: categories = [],
     isError: isCategoriesError,
     isLoading: isCategoriesLoading,
   } = useCategories()
-
-  const categories = rawCategories.filter((c) => c.name !== '전체 게시판')
 
   const { mutate: createPost, isPending } = useCreatePost()
   const navTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)

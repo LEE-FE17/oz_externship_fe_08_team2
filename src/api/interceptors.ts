@@ -1,4 +1,3 @@
-import axios from 'axios'
 import type {
   AxiosInstance,
   InternalAxiosRequestConfig,
@@ -10,7 +9,23 @@ interface RetryConfig extends InternalAxiosRequestConfig {
   _retry?: boolean
 }
 
+<<<<<<< feature/markdown-editor
+const redirectToLogin = () => {
+  useAuthStore.getState().logout()
+  localStorage.removeItem('accessToken')
+
+  // if (window.location.pathname !== ROUTES.AUTH.LOGIN) {
+  //   window.location.href = ROUTES.AUTH.LOGIN
+  // }
+}
+
+export function setupInterceptors(
+  instance: AxiosInstance,
+  baseInstance: AxiosInstance
+): void {
+=======
 export function setupInterceptors(instance: AxiosInstance): void {
+>>>>>>> dev
   instance.interceptors.request.use(
     (config) => {
       const token = localStorage.getItem('accessToken')
@@ -35,6 +50,11 @@ export function setupInterceptors(instance: AxiosInstance): void {
         originalConfig._retry = true
 
         try {
+<<<<<<< feature/markdown-editor
+          const { data } = await baseInstance.post(
+            '/api/v1/accounts/me/refresh',
+            {}
+=======
           const { data } = await axios.post(
             '/api/v1/accounts/me/refresh',
             {},
@@ -42,6 +62,7 @@ export function setupInterceptors(instance: AxiosInstance): void {
               baseURL: import.meta.env.VITE_API_BASE_URL,
               withCredentials: true,
             }
+>>>>>>> dev
           )
 
           const newToken = data.access_token

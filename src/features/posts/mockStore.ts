@@ -52,6 +52,27 @@ export const postMockStore = {
     return postMockStore.posts.get(id)
   },
 
+  update(
+    id: number,
+    data: { title: string; content: string; category_id: number }
+  ): void {
+    const existing = postMockStore.posts.get(id)
+    if (!existing) return
+    const category = MOCK_CATEGORIES.find((c) => c.id === data.category_id)
+    postMockStore.posts.set(id, {
+      ...existing,
+      title: data.title,
+      content: data.content,
+      category_id: data.category_id,
+      category_name: category?.name ?? existing.category_name,
+      updated_at: new Date().toISOString(),
+    })
+  },
+
+  remove(id: number): void {
+    postMockStore.posts.delete(id)
+  },
+
   /** PostListItem 형식으로 전체 목록 반환 (최신순) */
   getAll(): PostListItem[] {
     return Array.from(postMockStore.posts.values())
