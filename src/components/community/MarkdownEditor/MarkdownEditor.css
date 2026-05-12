@@ -157,6 +157,9 @@
 .post-editor-wrap .wmde-markdown li {
   margin: 0.25em 0 !important;
 }
+.post-editor-wrap .wmde-markdown li > p {
+  margin: 0 !important;
+}
 .post-editor-wrap .wmde-markdown ul ul {
   list-style-type: circle !important;
 }
