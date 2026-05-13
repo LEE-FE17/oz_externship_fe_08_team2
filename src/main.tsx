@@ -32,11 +32,3 @@ function renderApp() {
 //   })
 
 renderApp()
-// enableMocking()
-//   .then(() => renderApp())
-//   .catch((error) => {
-//     console.error('MSW 초기화 실패:', error)
-//     renderApp()
-//   })
-
-renderApp()
