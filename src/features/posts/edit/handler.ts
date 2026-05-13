@@ -1,9 +1,5 @@
 import { http, HttpResponse } from 'msw'
-<<<<<<< feature/markdown-editor
-import { postMockStore } from '../mockStore'
-=======
 import { postMockStore, MOCK_CATEGORIES } from '../mockStore'
->>>>>>> dev
 
 export const editHandlers = [
   http.put('/api/v1/posts/:postId', async ({ request, params }) => {
@@ -15,13 +11,6 @@ export const editHandlers = [
       )
     }
     const postId = Number(params.postId)
-<<<<<<< feature/markdown-editor
-    postMockStore.update(postId, {
-      title: body.title as string,
-      content: body.content as string,
-      category_id: Number(body.category_id),
-    })
-=======
     const categoryId = Number(body.category_id)
     const category = MOCK_CATEGORIES.find((c) => c.id === categoryId)
 
@@ -38,7 +27,6 @@ export const editHandlers = [
       })
     }
 
->>>>>>> dev
     return HttpResponse.json({
       id: postId,
       title: body.title as string,
