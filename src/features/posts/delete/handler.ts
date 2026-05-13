@@ -1,12 +1,7 @@
 import { delay, http, HttpResponse } from 'msw'
-<<<<<<< HEAD
-=======
 import { apiUrl } from '@/mocks/url'
 import type { PostDeleteResponse } from './types'
->>>>>>> 34cbdbf (fix: MSW 핸들러가 실제 API URL을 가로채지 못하는 문제 수정)
 import { postMockStore } from '../mockStore'
-import { apiUrl } from '@/mocks/url'
-import type { PostDeleteResponse } from './types'
 
 export const postDeleteHandlers = [
   http.delete(apiUrl('/api/v1/posts/:post_id'), async ({ params }) => {
@@ -20,7 +15,7 @@ export const postDeleteHandlers = [
       )
     }
 
-    postMockStore.remove(postId)
+    postMockStore.posts.delete(postId)
 
     const body: PostDeleteResponse = {
       detail: '게시글이 삭제되었습니다.',
