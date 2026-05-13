@@ -17,7 +17,7 @@ export function useCommentsInfiniteQuery(
     queryKey: ['posts', postId, 'comments', ordering],
     queryFn: async ({ pageParam }) => {
       const response = await api.get<CommentsResponse>(
-        `/api/v1/posts/${postId}/comments`,
+        `/api/v1/posts/${postId}/comments/`,
         {
           params: {
             page: pageParam,
