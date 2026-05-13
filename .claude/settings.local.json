@@ -39,11 +39,6 @@
     "context7",
     "playwright"
   ],
-  "enabledMcpjsonServers": [
-    "figma",
-    "context7",
-    "playwright"
-  ],
   "hooks": {
     "PreToolUse": [
       {
@@ -60,4 +55,3 @@
     ]
   }
   }
-}

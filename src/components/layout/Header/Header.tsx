@@ -49,7 +49,7 @@ export function Header({
                 커뮤니티
               </button>
               <a
-                href={ROUTES.QNA.LIST}
+                href={isAuthenticated ? ROUTES.QNA.LIST : ROUTES.AUTH.LOGIN}
                 className="hover:text-primary px-2.5 py-2.5 text-lg tracking-tight text-gray-900 transition-colors duration-150"
               >
                 질의응답
