@@ -4,20 +4,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 명령어
 
-- **개발 서버:** `pnpm dev` (Vite, http://localhost:5173)
-- **빌드:** `pnpm build` (`tsc -b && vite build`)
-- **린트:** `pnpm lint` (ESLint, `*.{ts,tsx}` 대상)
+- **개발 서버:** `npm run dev` (Vite, http://localhost:5173)
+- **빌드:** `npm run build` (`tsc -b && vite build`)
+- **린트:** `npm run lint` (ESLint, `*.{ts,tsx}` 대상)
 - **포맷팅:** `npx prettier --write <파일>`
 - **E2E 테스트:** `npx playwright test --project=chromium` (기능 테스트, `*.visual.*` 제외)
 - **단일 E2E 테스트:** `npx playwright test <테스트파일> --project=chromium`
-- **비주얼 회귀 테스트:** `pnpm test:visual` (`*.visual.spec.ts` 대상, 1920×1080 뷰포트)
-- **Figma 베이스라인 갱신:** `pnpm test:visual:update-baseline` (Figma에서 스크린샷 다운로드)
+- **비주얼 회귀 테스트:** `npm run test:visual` (`*.visual.spec.ts` 대상, 1920×1080 뷰포트)
+- **Figma 베이스라인 갱신:** `npm run test:visual:update-baseline` (Figma에서 스크린샷 다운로드)
 
 ## Git Hooks (Husky)
 
 - **pre-commit:** `lint-staged` 실행 — staged된 `*.{ts,tsx}`에 ESLint --fix + Prettier, `*.{json,css,md}`에 Prettier 적용
 - **commit-msg:** 커밋 메시지 형식 검증 — `<type>: <설명>` 형식 필수. 허용 타입: feat, fix, refactor, style, docs, test, chore, build, ci, perf. 예시: `feat: 로그인 기능 추가 (#12)`
-- **pre-push:** `pnpm build` 실행 — 빌드 실패 시 push 차단
+- **pre-push:** `npm run build` 실행 — 빌드 실패 시 push 차단
 
 ## 아키텍처
 
