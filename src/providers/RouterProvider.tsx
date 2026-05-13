@@ -7,7 +7,6 @@ import {
   CommunityEditPage,
 } from '@/pages/community'
 import { ComponentShowcase } from '@/pages/ComponentShowcase'
-import { Navigate, Route, Routes } from 'react-router-dom'
 
 export function RouterProvider() {
   return (
