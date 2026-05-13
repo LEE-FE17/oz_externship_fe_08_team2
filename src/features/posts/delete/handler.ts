@@ -1,6 +1,6 @@
 import { delay, http, HttpResponse } from 'msw'
-import type { PostDeleteResponse } from './types'
 import { postMockStore } from '../mockStore'
+import type { PostDeleteResponse } from './types'
 
 export const postDeleteHandlers = [
   http.delete('/api/v1/posts/:post_id', async ({ params }) => {
@@ -14,7 +14,7 @@ export const postDeleteHandlers = [
       )
     }
 
-    postMockStore.posts.delete(postId)
+    postMockStore.remove(postId)
 
     const body: PostDeleteResponse = {
       detail: '게시글이 삭제되었습니다.',

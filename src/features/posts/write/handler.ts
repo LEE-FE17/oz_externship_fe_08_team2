@@ -1,6 +1,8 @@
 import { http, HttpResponse } from 'msw'
 import { postMockStore } from '../mockStore'
 
+const mockS3Store = new Map<string, Blob>()
+
 export const writeHandlers = [
   http.post('/api/v1/posts/', async ({ request }) => {
     const body = (await request.json()) as Record<string, unknown>
@@ -24,15 +26,30 @@ export const writeHandlers = [
   http.post('/api/v1/posts/presigned-url', async ({ request }) => {
     const body = (await request.json()) as { file_name?: string }
     const fileName = body.file_name ?? 'image.png'
+    const encoded = encodeURIComponent(fileName)
     return HttpResponse.json({
-      presigned_url: `http://localhost:5173/api/mock-s3/${encodeURIComponent(fileName)}`,
-      img_url: `https://picsum.photos/seed/${encodeURIComponent(fileName)}/400/300`,
+      presigned_url: `http://localhost:5173/api/mock-s3/${encoded}`,
+      img_url: `http://localhost:5173/api/mock-s3/${encoded}`,
       key: `uploads/images/posts/${fileName}`,
     })
   }),
 
-  // MSW가 mock S3 PUT 요청도 가로채서 성공 처리
-  http.put('http://localhost:5173/api/mock-s3/:fileName', () => {
-    return new HttpResponse(null, { status: 200 })
+  // 업로드된 파일을 메모리에 저장
+  http.put(
+    'http://localhost:5173/api/mock-s3/:fileName',
+    async ({ request, params }) => {
+      const blob = await request.blob()
+      mockS3Store.set(decodeURIComponent(params.fileName as string), blob)
+      return new HttpResponse(null, { status: 200 })
+    }
+  ),
+
+  // 저장된 파일을 그대로 반환
+  http.get('http://localhost:5173/api/mock-s3/:fileName', ({ params }) => {
+    const blob = mockS3Store.get(decodeURIComponent(params.fileName as string))
+    if (!blob) return new HttpResponse(null, { status: 404 })
+    return new HttpResponse(blob, {
+      headers: { 'Content-Type': blob.type || 'image/jpeg' },
+    })
   }),
 ]

@@ -1,3 +1,9 @@
+/* ── 마크다운 에디터 툴바용 웹폰트 ──
+   index.html을 건드리지 않고 CSS @import로 Google Fonts 로드.
+   로드 실패 시 FONT_FAMILIES fallback 스택의 시스템 폰트로 자동 대체됨.
+*/
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Roboto:wght@400;700&family=Merriweather:wght@400;700&family=Source+Code+Pro:wght@400;700&display=swap');
+
 /* ── MDEditor CSS 변수 오버라이드: 외부 border/shadow 제거 ── */
 .post-editor-wrap .w-md-editor {
   --md-editor-box-shadow-color: transparent;
@@ -102,47 +108,6 @@
   opacity: 0.3 !important;
 }
 
-/* ── Tab 들여쓰기로 생성된 인덴티드 코드블록 배경 제거 ── */
-/* pre:not([class]) = 언어 미지정 코드블록 (4칸 들여쓰기 또는 언어 없는 펜싱) */
-.post-editor-wrap .wmde-markdown pre:not([class]) {
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-/* ── 목록 스타일 복원 ── */
-.post-editor-wrap .wmde-markdown ul {
-  list-style-type: disc !important;
-  padding-left: 2em !important;
-  margin: 0.5em 0 !important;
-}
-
-.post-editor-wrap .wmde-markdown ol {
-  list-style-type: decimal !important;
-  padding-left: 2em !important;
-  margin: 0.5em 0 !important;
-}
-
-.post-editor-wrap .wmde-markdown li {
-  display: list-item !important;
-}
-
-.post-editor-wrap .wmde-markdown ul ul {
-  list-style-type: circle !important;
-}
-
-.post-editor-wrap .wmde-markdown ul ul ul {
-  list-style-type: square !important;
-}
-
-.post-editor-wrap .wmde-markdown ol ol {
-  list-style-type: lower-alpha !important;
-}
-
-.post-editor-wrap .wmde-markdown ol ol ol {
-  list-style-type: lower-roman !important;
-}
-
 /* ── 헤딩 스타일 복원 ── */
 .post-editor-wrap .wmde-markdown h1 {
   font-size: 2em !important;
@@ -178,6 +143,42 @@
   color: #6b7280 !important;
 }
 
+/* ── 목록 스타일 복원 ── */
+.post-editor-wrap .wmde-markdown ul {
+  list-style-type: disc !important;
+  padding-left: 2em !important;
+  margin: 0.5em 0 !important;
+}
+.post-editor-wrap .wmde-markdown ol {
+  list-style-type: decimal !important;
+  padding-left: 2em !important;
+  margin: 0.5em 0 !important;
+}
+.post-editor-wrap .wmde-markdown li {
+  margin: 0.25em 0 !important;
+}
+.post-editor-wrap .wmde-markdown li > p {
+  margin: 0 !important;
+}
+.post-editor-wrap .wmde-markdown ul ul {
+  list-style-type: circle !important;
+}
+.post-editor-wrap .wmde-markdown ul ul ul {
+  list-style-type: square !important;
+}
+
+/* ── 툴바 필 버튼 아이콘 (글꼴·글자크기 드롭다운 아이콘) ── */
+.toolbar-pill-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+/* ── 글자 크기 팝업 최소 너비 ── */
+.toolbar-popup--font-size {
+  min-width: 60px;
+}
+
 /* ── 드롭다운 팝업 ── */
 .toolbar-popup {
   background: #fff;
@@ -207,6 +208,34 @@
   background: #f1f5f9;
 }
 
+/* ── 배경색 팝업 ── */
+.bg-color-popup {
+  padding: 7px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.bg-color-remove-btn {
+  display: block;
+  width: 100%;
+  margin-bottom: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.bg-color-remove-btn:hover {
+  background: #f1f5f9;
+}
+
 /* ── 색상 팔레트 ── */
 .color-palette {
   display: grid;
@@ -231,4 +260,9 @@
 .color-swatch:hover {
   transform: scale(1.2);
   border-color: #64748b;
+}
+
+/* 흰색 스와치는 배경과 구분되도록 더 진한 테두리 적용 */
+.color-swatch[data-white='true'] {
+  border-color: #cdcdcd;
 }
