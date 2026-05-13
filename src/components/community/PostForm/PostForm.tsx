@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import type { Category } from '@/features/posts/categories'
-import { usePresignedUrl } from '@/features/posts/write'
 import { Dropdown } from '@/components/common/Dropdown'
 import { MarkdownEditor } from '../MarkdownEditor'
 import { SubmitButton } from '../SubmitButton'
@@ -56,7 +55,6 @@ export function PostForm({
     content: defaultValues?.content ?? '',
   }))
   const [errors, setErrors] = useState<PostFormErrors>({})
-  const { mutateAsync: getPresignedUrl } = usePresignedUrl()
 
   const categoryOptions = categories.map((c) => ({
     value: String(c.id),
@@ -69,18 +67,6 @@ export function PostForm({
   ) => {
     setValues((prev) => ({ ...prev, [key]: value }))
     if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }))
-  }
-
-  const handleImageUpload = async (file: File): Promise<string> => {
-    const { presigned_url, img_url } = await getPresignedUrl({
-      file_name: file.name,
-    })
-    await fetch(presigned_url, {
-      method: 'PUT',
-      body: file,
-      headers: { 'Content-Type': file.type },
-    })
-    return img_url
   }
 
   const validate = (): boolean => {
@@ -157,7 +143,6 @@ export function PostForm({
       <MarkdownEditor
         value={values.content}
         onChange={(v) => handleChange('content', v)}
-        onImageUpload={handleImageUpload}
         error={errors.content}
       />
 

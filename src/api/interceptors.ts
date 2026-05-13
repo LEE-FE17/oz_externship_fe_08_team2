@@ -1,10 +1,10 @@
-import axios from 'axios'
 import type {
   AxiosInstance,
   InternalAxiosRequestConfig,
   AxiosError,
 } from 'axios'
 import { useAuthStore } from '@/stores/authStore'
+import axios from 'axios'
 
 interface RetryConfig extends InternalAxiosRequestConfig {
   _retry?: boolean
