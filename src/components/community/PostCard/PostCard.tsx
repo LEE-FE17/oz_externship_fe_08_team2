@@ -110,7 +110,7 @@ export function PostCard({ post, onClick }: PostCardProps) {
         .filter(Boolean)
         .join(' ')}
     >
-      <div className="flex h-40.75 w-full justify-between overflow-hidden">
+      <div className="flex h-40.75 w-full justify-between gap-10 overflow-hidden">
         {/* 텍스트 영역 */}
         <div className="flex min-w-0 flex-1 flex-col gap-1.5 overflow-hidden">
           {/* 카테고리 */}
