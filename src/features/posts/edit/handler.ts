@@ -21,8 +21,10 @@ export const editHandlers = [
         ...existing,
         title: body.title as string,
         content: body.content as string,
-        category_id: categoryId,
-        category_name: category?.name ?? existing.category_name,
+        category: {
+          id: categoryId,
+          name: category?.name ?? existing.category.name,
+        },
         updated_at: new Date().toISOString(),
       })
     }

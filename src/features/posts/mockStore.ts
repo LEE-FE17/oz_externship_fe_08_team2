@@ -35,8 +35,7 @@ export const postMockStore = {
       id,
       title: data.title,
       content: data.content,
-      category_id: data.category_id,
-      category_name: category?.name ?? '기타',
+      category: { id: data.category_id, name: category?.name ?? '기타' },
       author: { id: 99, nickname: '테스트유저', profile_img_url: null },
       view_count: 0,
       like_count: 0,
@@ -63,8 +62,10 @@ export const postMockStore = {
       ...existing,
       title: data.title,
       content: data.content,
-      category_id: data.category_id,
-      category_name: category?.name ?? existing.category_name,
+      category: {
+        id: data.category_id,
+        name: category?.name ?? existing.category.name,
+      },
       updated_at: new Date().toISOString(),
     })
   },
@@ -85,7 +86,7 @@ export const postMockStore = {
         title: p.title,
         content: p.content,
         thumbnail: null,
-        category: { id: p.category_id, name: p.category_name },
+        category: { id: p.category.id, name: p.category.name },
         author: {
           id: p.author.id,
           nickname: p.author.nickname,

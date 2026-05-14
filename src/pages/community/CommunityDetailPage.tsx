@@ -137,7 +137,7 @@ function CommunityDetailContent({ postId }: { postId: number }) {
       <article className="flex flex-col">
         {/* 헤더: 카테고리 · 제목 · 작성자 · 메타 */}
         <PostHeader
-          category={post.category_name}
+          category={post.category.name}
           title={post.title}
           author={{
             nickname: post.author.nickname,

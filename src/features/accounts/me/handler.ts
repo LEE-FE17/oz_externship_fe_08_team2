@@ -3,7 +3,7 @@ import { apiUrl } from '@/mocks/url'
 import type { MeResponse } from './types'
 
 export const meHandlers = [
-  http.get(apiUrl('/api/v1/accounts/me/'), ({ request }) => {
+  http.get(apiUrl('/api/v1/accounts/me'), ({ request }) => {
     const authHeader = request.headers.get('Authorization')
     if (!authHeader?.startsWith('Bearer ')) {
       return HttpResponse.json({ detail: 'Unauthorized' }, { status: 401 })

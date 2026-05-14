@@ -104,7 +104,7 @@ export function CommunityEditPage() {
         defaultValues={
           post
             ? {
-                categoryId: String(post.category_id),
+                categoryId: String(post.category.id),
                 title: post.title,
                 content: post.content,
               }

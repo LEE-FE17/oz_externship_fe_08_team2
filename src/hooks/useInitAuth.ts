@@ -26,7 +26,7 @@ export function useInitAuth() {
     }
 
     api
-      .get<MeResponse>('/api/v1/accounts/me/')
+      .get<MeResponse>('/api/v1/accounts/me')
       .then(({ data }) => {
         useAuthStore.getState().login({
           id: data.id,
