@@ -6,6 +6,24 @@ export interface PostCardProps {
   onClick?: () => void
 }
 
+function extractFirstImage(text: string): string | null {
+  const match = /!\[([^\]]*)\]\(([^)]+)\)/.exec(text)
+  return match ? match[2] : null
+}
+
+function stripMarkdown(text: string): string {
+  return text
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/!\[([^\]]*)\]\([^)]*\)/g, '')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/(\*{1,3}|_{1,3})(.+?)\1/g, '$2')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/`([^`]*)`/g, '$1')
+    .replace(/^[-*]{3,}\s*$/gm, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
 function formatRelativeTime(isoString: string): string {
   const target = new Date(isoString).getTime()
   if (Number.isNaN(target)) return ''
@@ -76,7 +94,8 @@ function EyeIcon() {
 }
 
 export function PostCard({ post, onClick }: PostCardProps) {
-  const hasThumbnail = !!post.thumbnail
+  const effectiveThumbnail = post.thumbnail || extractFirstImage(post.content)
+  const hasThumbnail = !!effectiveThumbnail
 
   return (
     <article
@@ -111,7 +130,7 @@ export function PostCard({ post, onClick }: PostCardProps) {
                 : 'line-clamp-2 min-h-10.5',
             ].join(' ')}
           >
-            {post.content}
+            {stripMarkdown(post.content)}
           </p>
 
           {/* 하단 메타 */}
@@ -155,7 +174,7 @@ export function PostCard({ post, onClick }: PostCardProps) {
         {/* 썸네일 */}
         {hasThumbnail && (
           <img
-            src={post.thumbnail ?? ''}
+            src={effectiveThumbnail ?? ''}
             alt=""
             role="presentation"
             loading="lazy"
