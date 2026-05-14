@@ -28,9 +28,17 @@ const SORT_OPTIONS: { value: PostSortOption; label: string }[] = [
   { value: 'most_comments', label: '댓글순' },
 ]
 
-type CategoryTab = { value: string; label: string; categoryId: number | undefined }
+type CategoryTab = {
+  value: string
+  label: string
+  categoryId: number | undefined
+}
 
-const ALL_TAB: CategoryTab = { value: 'all', label: '전체', categoryId: undefined }
+const ALL_TAB: CategoryTab = {
+  value: 'all',
+  label: '전체',
+  categoryId: undefined,
+}
 
 function PencilIcon() {
   return (
@@ -226,7 +234,7 @@ export function CommunityListPage() {
             ref={tabsScrollRef}
             role="tablist"
             aria-label="게시글 카테고리"
-            className="flex min-w-0 flex-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="flex min-w-0 flex-1 scrollbar-none overflow-x-auto [&::-webkit-scrollbar]:hidden"
           >
             {categoryTabs.map((tab) => (
               <button
