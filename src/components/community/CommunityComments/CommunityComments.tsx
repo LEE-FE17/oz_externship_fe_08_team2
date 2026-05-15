@@ -46,7 +46,7 @@ export function CommunityComments({ postId }: Props) {
     isLoading,
     isError,
     error,
-  } = useCommentsInfiniteQuery(postId, sortOrder, Boolean(postId))
+  } = useCommentsInfiniteQuery(postId, Boolean(postId))
 
   const queryClient = useQueryClient()
   const { mutate: submitComment, isPending: isSubmitting } =
@@ -169,7 +169,13 @@ export function CommunityComments({ postId }: Props) {
     return () => observer.disconnect()
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
-  const allComments = data?.pages.flatMap((page) => page.results) ?? []
+  const allComments = (data?.pages.flatMap((page) => page.results) ?? []).sort(
+    (a, b) => {
+      const diff =
+        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      return sortOrder === 'oldest' ? diff : -diff
+    }
+  )
   const totalCount = data?.pages[0]?.count ?? 0
 
   if (isLoading) {
