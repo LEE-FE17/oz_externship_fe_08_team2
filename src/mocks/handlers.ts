@@ -10,6 +10,9 @@ import { postDeleteHandlers } from '@/features/posts/delete'
 import { userSearchHandlers } from '@/features/accounts/user-search'
 // import { logoutHandlers } from '@/features/accounts/logout'
 import { meHandlers } from '@/features/accounts/me'
+import { csChatbotHandlers } from '@/features/chatbot/cs/handler'
+import { qnaChatbotHandlers } from '@/features/chatbot/qna/handler'
+import { sessionsHandlers } from '@/features/chatbot/sessions/handler'
 
 // categories → list → detail 순서: /posts/categories, /posts/가 /posts/:postId보다 먼저 매칭되어야 함
 export const handlers = [
@@ -27,4 +30,7 @@ export const handlers = [
   ...postDeleteHandlers,
   ...userSearchHandlers,
   // ...logoutHandlers,
+  ...csChatbotHandlers,
+  ...qnaChatbotHandlers,
+  ...sessionsHandlers,
 ]
