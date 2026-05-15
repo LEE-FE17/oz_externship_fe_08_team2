@@ -34,8 +34,5 @@ export const useTogglePostLike = (postId: number) => {
         queryClient.setQueryData(queryKey, context.previous)
       }
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey })
-    },
   })
 }
