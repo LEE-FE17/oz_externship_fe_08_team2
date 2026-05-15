@@ -234,7 +234,7 @@ export function CommunityListPage() {
             ref={tabsScrollRef}
             role="tablist"
             aria-label="게시글 카테고리"
-            className="scrollbar-none flex min-w-0 flex-1 overflow-x-auto [&::-webkit-scrollbar]:hidden"
+            className="flex min-w-0 flex-1 scrollbar-none overflow-x-auto [&::-webkit-scrollbar]:hidden"
           >
             {categoryTabs.map((tab) => (
               <button
