@@ -30,7 +30,7 @@ export function CommunityComments({ postId }: Props) {
   const [inputValue, setInputValue] = useState('')
   const [submitError, setSubmitError] = useState(false)
   const [submitErrorMessage, setSubmitErrorMessage] = useState('')
-  const [sortOrder, setSortOrder] = useState<SortOrder>('latest')
+  const [sortOrder, setSortOrder] = useState<SortOrder>('oldest')
   const [deleteToast, setDeleteToast] = useState<{
     visible: boolean
     message: string
@@ -169,7 +169,13 @@ export function CommunityComments({ postId }: Props) {
     return () => observer.disconnect()
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
-  const allComments = data?.pages.flatMap((page) => page.results) ?? []
+  const allComments = (data?.pages.flatMap((page) => page.results) ?? []).sort(
+    (a, b) => {
+      const diff =
+        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      return sortOrder === 'oldest' ? diff : -diff
+    }
+  )
   const totalCount = data?.pages[0]?.count ?? 0
 
   if (isLoading) {

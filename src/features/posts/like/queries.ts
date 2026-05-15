@@ -10,9 +10,7 @@ export const useTogglePostLike = (postId: number) => {
   return useMutation({
     mutationFn: async (isCurrentlyLiked: boolean) => {
       const { data } = isCurrentlyLiked
-        ? await api.delete<PostLikeResponse>(
-            `/api/v1/posts/${postId}/like/cancel`
-          )
+        ? await api.delete<PostLikeResponse>(`/api/v1/posts/${postId}/like`)
         : await api.post<PostLikeResponse>(`/api/v1/posts/${postId}/like`)
       return data
     },
@@ -35,9 +33,6 @@ export const useTogglePostLike = (postId: number) => {
       if (context?.previous) {
         queryClient.setQueryData(queryKey, context.previous)
       }
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey })
     },
   })
 }

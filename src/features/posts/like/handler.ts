@@ -17,7 +17,7 @@ export const postLikeHandlers = [
     }
     return HttpResponse.json(body)
   }),
-  http.delete(apiUrl('/api/v1/posts/:post_id/like/cancel'), ({ params }) => {
+  http.delete(apiUrl('/api/v1/posts/:post_id/like'), ({ params }) => {
     const postId = Number(params.post_id)
     const newCount = Math.max(0, likeMockStore.getLikeCount(postId) - 1)
     likeMockStore.likeCountMap.set(postId, newCount)
