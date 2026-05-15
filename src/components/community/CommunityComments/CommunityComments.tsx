@@ -30,7 +30,7 @@ export function CommunityComments({ postId }: Props) {
   const [inputValue, setInputValue] = useState('')
   const [submitError, setSubmitError] = useState(false)
   const [submitErrorMessage, setSubmitErrorMessage] = useState('')
-  const [sortOrder, setSortOrder] = useState<SortOrder>('latest')
+  const [sortOrder, setSortOrder] = useState<SortOrder>('oldest')
   const [deleteToast, setDeleteToast] = useState<{
     visible: boolean
     message: string
@@ -46,7 +46,7 @@ export function CommunityComments({ postId }: Props) {
     isLoading,
     isError,
     error,
-  } = useCommentsInfiniteQuery(postId, Boolean(postId))
+  } = useCommentsInfiniteQuery(postId, sortOrder, Boolean(postId))
 
   const queryClient = useQueryClient()
   const { mutate: submitComment, isPending: isSubmitting } =

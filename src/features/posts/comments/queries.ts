@@ -8,9 +8,13 @@ import type { Comment, CommentsResponse, CommentSubmitRequest } from './types'
 
 const PAGE_SIZE = 10
 
-export function useCommentsInfiniteQuery(postId: number, enabled = true) {
+export function useCommentsInfiniteQuery(
+  postId: number,
+  ordering: 'latest' | 'oldest' = 'oldest',
+  enabled = true
+) {
   return useInfiniteQuery({
-    queryKey: ['posts', postId, 'comments'],
+    queryKey: ['posts', postId, 'comments', ordering],
     queryFn: async ({ pageParam }) => {
       const response = await api.get<CommentsResponse>(
         `/api/v1/posts/${postId}/comments`,
@@ -18,6 +22,7 @@ export function useCommentsInfiniteQuery(postId: number, enabled = true) {
           params: {
             page: pageParam,
             page_size: PAGE_SIZE,
+            ordering: ordering === 'latest' ? '-created_at' : 'created_at',
           },
         }
       )
