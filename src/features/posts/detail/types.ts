@@ -8,8 +8,7 @@ export interface PostDetailResponse {
   id: number
   title: string
   author: PostDetailAuthor
-  category_id: number
-  category_name: string
+  category: { id: number; name: string }
   content: string
   view_count: number
   like_count: number

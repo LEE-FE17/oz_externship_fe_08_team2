@@ -6,9 +6,9 @@ import { postDetailHandlers } from '@/features/posts/detail'
 import { editHandlers } from '@/features/posts/edit'
 import { postLikeHandlers } from '@/features/posts/like'
 import { postDeleteHandlers } from '@/features/posts/delete'
-import { commentsHandlers } from '@/features/posts/comments'
+// import { commentsHandlers } from '@/features/posts/comments'
 import { userSearchHandlers } from '@/features/accounts/user-search'
-import { logoutHandlers } from '@/features/accounts/logout'
+// import { logoutHandlers } from '@/features/accounts/logout'
 import { meHandlers } from '@/features/accounts/me'
 
 // categories → list → detail 순서: /posts/categories, /posts/가 /posts/:postId보다 먼저 매칭되어야 함
@@ -22,9 +22,9 @@ export const handlers = [
   ...writeHandlers,
   ...postDetailHandlers,
   ...editHandlers,
-  ...commentsHandlers,
+  // ...commentsHandlers,
   ...postLikeHandlers,
   ...postDeleteHandlers,
   ...userSearchHandlers,
-  ...logoutHandlers,
+  // ...logoutHandlers,
 ]

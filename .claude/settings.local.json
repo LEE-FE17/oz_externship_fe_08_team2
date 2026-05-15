@@ -30,9 +30,15 @@
       "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\이용기\\\\Desktop\\\\2팀\\\\oz_externship_fe_08_team2\\\\src\" -Recurse -Directory)",
       "Bash(Select-Object -ExpandProperty FullName)",
       "Bash(Remove-Item -Recurse -Force \"c:\\\\Users\\\\이용기\\\\Desktop\\\\2팀\\\\oz_externship_fe_08_team2\\\\src\\\\features\\\\accounts\" -ErrorAction SilentlyContinue)",
-      "Bash(Write-Host \"done\")"
+      "Bash(Write-Host \"done\")",
+      "Bash(xargs grep:*)"
     ]
   },
+  "enabledMcpjsonServers": [
+    "figma",
+    "context7",
+    "playwright"
+  ],
   "hooks": {
     "PreToolUse": [
       {
@@ -47,10 +53,5 @@
         ]
       }
     ]
-  },
-  "enabledMcpjsonServers": [
-    "figma",
-    "context7",
-    "playwright"
-  ]
-}
+  }
+  }

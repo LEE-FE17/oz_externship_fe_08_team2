@@ -1,4 +1,5 @@
 import { http, HttpResponse } from 'msw'
+import { apiUrl } from '@/mocks/url'
 import type { UserSearchResponse } from './types'
 
 const mockUsers = [
@@ -12,7 +13,7 @@ const mockUsers = [
 ]
 
 export const userSearchHandlers = [
-  http.get('/api/v1/users/search', ({ request }) => {
+  http.get(apiUrl('/api/v1/users/search'), ({ request }) => {
     const url = new URL(request.url)
     const query = url.searchParams.get('nickname') ?? ''
 

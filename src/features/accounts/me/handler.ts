@@ -1,10 +1,11 @@
 import { http, HttpResponse } from 'msw'
+import { apiUrl } from '@/mocks/url'
 import type { MeResponse } from './types'
 
 export const meHandlers = [
-  http.get('/api/v1/accounts/me/', () => {
-    const token = localStorage.getItem('accessToken')
-    if (!token) {
+  http.get(apiUrl('/api/v1/accounts/me'), ({ request }) => {
+    const authHeader = request.headers.get('Authorization')
+    if (!authHeader?.startsWith('Bearer ')) {
       return HttpResponse.json({ detail: 'Unauthorized' }, { status: 401 })
     }
     return HttpResponse.json<MeResponse>({
@@ -15,7 +16,7 @@ export const meHandlers = [
     })
   }),
 
-  http.post('/api/v1/accounts/me/refresh', () => {
+  http.post(apiUrl('/api/v1/accounts/me/refresh'), () => {
     const token = localStorage.getItem('accessToken')
     if (!token) {
       return HttpResponse.json({ detail: 'No refresh token' }, { status: 401 })

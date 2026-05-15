@@ -1,7 +1,8 @@
 import { http, HttpResponse } from 'msw'
+import { apiUrl } from '@/mocks/url'
 
 export const categoriesHandlers = [
-  http.get('/api/v1/posts/categories', () => {
+  http.get(apiUrl('/api/v1/posts/categories'), () => {
     return HttpResponse.json([
       { id: 1, name: '전체 게시판' },
       { id: 2, name: '공지사항' },

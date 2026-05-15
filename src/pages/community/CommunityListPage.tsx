@@ -8,6 +8,7 @@ import { PostCard } from '@/components/community'
 import { ROUTES } from '@/constants/routes'
 import { usePostList } from '@/features/posts/list'
 import type { PostSearchFilter, PostSortOption } from '@/features/posts/list'
+import { useCategories } from '@/features/posts/categories'
 import { useAuthStore } from '@/stores/authStore'
 
 const PAGE_SIZE = 10
@@ -27,19 +28,17 @@ const SORT_OPTIONS: { value: PostSortOption; label: string }[] = [
   { value: 'most_comments', label: '댓글순' },
 ]
 
-const CATEGORY_TABS: {
+type CategoryTab = {
   value: string
   label: string
   categoryId: number | undefined
-}[] = [
-  { value: 'all', label: '전체', categoryId: undefined },
-  { value: 'popular', label: '인기글', categoryId: undefined },
-  { value: 'notice', label: '공지사항', categoryId: 1 },
-  { value: 'free', label: '자유게시판', categoryId: 2 },
-  { value: 'concern', label: '고민 상담', categoryId: 3 },
-  { value: 'recruit', label: '구인/협업', categoryId: 4 },
-  { value: 'resource', label: '자료공유', categoryId: 5 },
-]
+}
+
+const ALL_TAB: CategoryTab = {
+  value: 'all',
+  label: '전체',
+  categoryId: undefined,
+}
 
 function PencilIcon() {
   return (
@@ -108,15 +107,25 @@ export function CommunityListPage() {
   const isInitialized = useAuthStore((s) => s.isInitialized)
   const tabsScrollRef = useRef<HTMLDivElement>(null)
 
+  const { data: categoriesData } = useCategories()
+  const categoryTabs: CategoryTab[] = [
+    ALL_TAB,
+    ...(categoriesData ?? []).map((c) => ({
+      value: String(c.id),
+      label: c.name,
+      categoryId: c.id,
+    })),
+  ]
+
   const [searchType, setSearchType] = useState<PostSearchFilter | undefined>(
     undefined
   )
   const [searchQuery, setSearchQuery] = useState('')
-  const [category, setCategory] = useState(CATEGORY_TABS[0].value)
+  const [category, setCategory] = useState(ALL_TAB.value)
   const [sort, setSort] = useState<PostSortOption>(SORT_OPTIONS[0].value)
   const [page, setPage] = useState(1)
 
-  const activeCategory = CATEGORY_TABS.find((t) => t.value === category)
+  const activeCategory = categoryTabs.find((t) => t.value === category)
 
   const { data, isLoading, isError } = usePostList({
     sort,
@@ -146,21 +155,21 @@ export function CommunityListPage() {
 
   const handleWriteClick = () => {
     if (isInitialized && !isAuthenticated) {
-      navigate(ROUTES.AUTH.LOGIN || ROUTES.COMMUNITY.LIST)
+      window.location.href = ROUTES.AUTH.LOGIN
       return
     }
     navigate(ROUTES.COMMUNITY.WRITE)
   }
 
-  const currentIndex = CATEGORY_TABS.findIndex((t) => t.value === category)
+  const currentIndex = categoryTabs.findIndex((t) => t.value === category)
 
   const moveCategory = (dir: 'left' | 'right') => {
     const next =
       dir === 'left'
         ? Math.max(0, currentIndex - 1)
-        : Math.min(CATEGORY_TABS.length - 1, currentIndex + 1)
+        : Math.min(categoryTabs.length - 1, currentIndex + 1)
     if (next === currentIndex) return
-    handleCategoryChange(CATEGORY_TABS[next].value)
+    handleCategoryChange(categoryTabs[next].value)
     // 선택된 탭이 보이도록 스크롤
     const tabEl = tabsScrollRef.current?.children[next] as
       | HTMLElement
@@ -225,9 +234,9 @@ export function CommunityListPage() {
             ref={tabsScrollRef}
             role="tablist"
             aria-label="게시글 카테고리"
-            className="flex min-w-0 flex-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="flex min-w-0 flex-1 scrollbar-none overflow-x-auto [&::-webkit-scrollbar]:hidden"
           >
-            {CATEGORY_TABS.map((tab) => (
+            {categoryTabs.map((tab) => (
               <button
                 key={tab.value}
                 type="button"

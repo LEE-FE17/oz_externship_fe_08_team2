@@ -1,4 +1,5 @@
 import { delay, http, HttpResponse } from 'msw'
+import { apiUrl } from '@/mocks/url'
 import type { PostDetailResponse } from './types'
 import { likeMockStore, postMockStore } from '../mockStore'
 
@@ -8,8 +9,7 @@ const dummyPostBase = {
     nickname: 'testuser',
     profile_img_url: 'https://example.com/profile.png',
   },
-  category_id: 3,
-  category_name: '자유 게시판',
+  category: { id: 3, name: '자유 게시판' },
   title: '테스트 게시글',
   content: '게시글 내용입니다.',
   view_count: 10,
@@ -19,7 +19,7 @@ const dummyPostBase = {
 }
 
 export const postDetailHandlers = [
-  http.get('/api/v1/posts/:post_id', async ({ params }) => {
+  http.get(apiUrl('/api/v1/posts/:post_id'), async ({ params }) => {
     await delay(300)
     const postId = Number(params.post_id)
 

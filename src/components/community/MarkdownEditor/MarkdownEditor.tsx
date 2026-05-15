@@ -182,16 +182,52 @@ export function MarkdownEditor({
           return
         }
 
-        // 들여쓰기된 번호 목록 (빈 항목 → 상위 레벨로 복귀)
+        // 들여쓰기된 번호 목록 (빈 항목)
         const orderedEmptyMatch = line.match(/^( +)(\d+)\. $/)
         if (orderedEmptyMatch) {
           e.preventDefault()
           e.stopPropagation()
           const [, indent, numStr] = orderedEmptyMatch
-          const nextItem = `${indent}${parseInt(numStr, 10) + 1}. `
-          const newText =
-            text.slice(0, lineStart) + nextItem + text.slice(lineEnd)
-          applyText(ta, newText, lineStart + nextItem.length)
+
+          const prevLineEnd = lineStart - 1
+          const prevLineStart =
+            lineStart > 0 ? text.lastIndexOf('\n', prevLineEnd - 1) + 1 : 0
+          const prevLine =
+            lineStart > 0 ? text.slice(prevLineStart, prevLineEnd) : ''
+
+          if (prevLine === indent) {
+            // 3번째 엔터: 현재 줄을 부모 레벨 번호 목록으로 교체
+            const lines = text.split('\n')
+            const lineIndex = (text.slice(0, lineStart).match(/\n/g) ?? [])
+              .length
+            let parentIndent = ''
+            for (let i = lineIndex - 1; i >= 0; i--) {
+              const m = lines[i].match(/^(\s*)(\d+)\. /)
+              if (m && m[1].length < indent.length) {
+                parentIndent = m[1]
+                break
+              }
+            }
+            const parentNum = computeNextNumber(lines, lineIndex, parentIndent)
+            const newLine = `${parentIndent}${parentNum}. `
+            const newText =
+              text.slice(0, lineStart) + newLine + text.slice(lineEnd)
+            applyText(ta, newText, lineStart + newLine.length)
+          } else {
+            // 2번째 엔터: 들여쓰기 유지, 새 하위 번호 줄 추가
+            const nextNum = parseInt(numStr, 10) + 1
+            const nextItem = `${indent}${nextNum}. `
+            const newText =
+              text.slice(0, lineStart) +
+              indent +
+              `\n${nextItem}` +
+              text.slice(lineEnd)
+            applyText(
+              ta,
+              newText,
+              lineStart + indent.length + 1 + nextItem.length
+            )
+          }
           return
         }
 

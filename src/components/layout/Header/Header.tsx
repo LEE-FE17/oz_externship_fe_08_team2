@@ -33,13 +33,13 @@ export function Header({
         <div className="max-w-container mx-auto flex h-16 items-center justify-between px-4">
           {/* Left: Logo + Nav */}
           <div className="flex items-center gap-15">
-            <button
-              onClick={() => navigate(ROUTES.HOME)}
+            <a
+              href={ROUTES.HOME}
               className="flex shrink-0 items-center"
               aria-label="홈으로 이동"
             >
               <img src={logoImg} alt="OzCodingSchool" className="h-5 w-auto" />
-            </button>
+            </a>
 
             <nav className="flex items-center gap-15">
               <button
@@ -48,12 +48,12 @@ export function Header({
               >
                 커뮤니티
               </button>
-              <button
-                onClick={() => navigate(ROUTES.QNA.LIST)}
+              <a
+                href={ROUTES.QNA.LIST}
                 className="hover:text-primary px-2.5 py-2.5 text-lg tracking-tight text-gray-900 transition-colors duration-150"
               >
                 질의응답
-              </button>
+              </a>
             </nav>
           </div>
 
@@ -83,14 +83,10 @@ export function Header({
                 onClose={() => setDropdownOpen(false)}
                 nickname={user?.nickname ?? ''}
                 email={user?.email ?? ''}
-                onEnroll={() => {
-                  navigate(ROUTES.SIGNUP.SELECT)
-                  setDropdownOpen(false)
-                }}
-                onMypage={() => {
-                  navigate(ROUTES.MYPAGE.HOME)
-                  setDropdownOpen(false)
-                }}
+                enrollHref={ROUTES.SIGNUP.SELECT}
+                mypageHref={
+                  isAuthenticated ? ROUTES.MYPAGE.HOME : ROUTES.AUTH.LOGIN
+                }
                 onLogout={() => {
                   requestLogout(undefined, {
                     onSettled: () => {
@@ -104,19 +100,19 @@ export function Header({
             </div>
           ) : (
             <div className="flex items-center gap-3 text-base tracking-tight text-gray-600">
-              <button
-                onClick={() => navigate(ROUTES.AUTH.LOGIN)}
+              <a
+                href={ROUTES.AUTH.LOGIN}
                 className="transition-colors duration-150 hover:text-gray-900"
               >
                 로그인
-              </button>
+              </a>
               <span className="text-gray-400">|</span>
-              <button
-                onClick={() => navigate(ROUTES.SIGNUP.SELECT)}
+              <a
+                href={ROUTES.SIGNUP.SELECT}
                 className="transition-colors duration-150 hover:text-gray-900"
               >
                 회원가입
-              </button>
+              </a>
             </div>
           )}
         </div>

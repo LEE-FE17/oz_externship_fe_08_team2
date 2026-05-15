@@ -1,4 +1,5 @@
 import { http, HttpResponse, delay } from 'msw'
+import { apiUrl } from '@/mocks/url'
 import type { CommentsResponse } from './types'
 
 // user-search 핸들러의 목 유저 목록과 동일하게 유지
@@ -43,29 +44,32 @@ const seedComments = Array.from({ length: 25 }, (_, i) => {
 const mockComments = [...seedComments]
 
 export const commentsHandlers = [
-  http.post('/api/v1/posts/:postId/comments/', async ({ params, request }) => {
-    const { postId } = params
-    if (postId === '999') {
-      return HttpResponse.json(
-        { error_detail: '해당 게시글을 찾을 수 없습니다.' },
-        { status: 404 }
-      )
+  http.post(
+    apiUrl('/api/v1/posts/:postId/comments'),
+    async ({ params, request }) => {
+      const { postId } = params
+      if (postId === '999') {
+        return HttpResponse.json(
+          { error_detail: '해당 게시글을 찾을 수 없습니다.' },
+          { status: 404 }
+        )
+      }
+      const body = (await request.json()) as { content: string }
+      const newComment = {
+        id: Date.now(),
+        author: { id: 99, nickname: '테스트유저', profile_img_url: null },
+        tagged_users: extractTaggedUsers(body.content),
+        content: body.content,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      }
+      mockComments.unshift(newComment)
+      return HttpResponse.json(newComment, { status: 201 })
     }
-    const body = (await request.json()) as { content: string }
-    const newComment = {
-      id: Date.now(),
-      author: { id: 99, nickname: '테스트유저', profile_img_url: null },
-      tagged_users: extractTaggedUsers(body.content),
-      content: body.content,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    }
-    mockComments.unshift(newComment)
-    return HttpResponse.json(newComment, { status: 201 })
-  }),
+  ),
 
   http.delete(
-    '/api/v1/posts/:postId/comments/:commentId/',
+    apiUrl('/api/v1/posts/:postId/comments/:commentId'),
     async ({ params }) => {
       const { postId, commentId } = params
       if (postId === '999') {
@@ -86,46 +90,49 @@ export const commentsHandlers = [
     }
   ),
 
-  http.get('/api/v1/posts/:postId/comments/', async ({ params, request }) => {
-    await delay(1000)
-    const { postId } = params
+  http.get(
+    apiUrl('/api/v1/posts/:postId/comments'),
+    async ({ params, request }) => {
+      await delay(1000)
+      const { postId } = params
 
-    if (postId === '999') {
-      return HttpResponse.json(
-        { error_detail: '해당 게시글을 찾을 수 없습니다.' },
-        { status: 404 }
-      )
-    }
+      if (postId === '999') {
+        return HttpResponse.json(
+          { error_detail: '해당 게시글을 찾을 수 없습니다.' },
+          { status: 404 }
+        )
+      }
 
-    const url = new URL(request.url)
-    const page = Number(url.searchParams.get('page') ?? 1)
-    const pageSize = Number(url.searchParams.get('page_size') ?? 10)
-    const ordering = url.searchParams.get('ordering') ?? '-created_at'
+      const url = new URL(request.url)
+      const page = Number(url.searchParams.get('page') ?? 1)
+      const pageSize = Number(url.searchParams.get('page_size') ?? 10)
+      const ordering = url.searchParams.get('ordering') ?? '-created_at'
 
-    const sorted = [...mockComments].sort((a, b) => {
-      const diff =
-        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-      return ordering === 'created_at' ? diff : -diff
-    })
+      const sorted = [...mockComments].sort((a, b) => {
+        const diff =
+          new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+        return ordering === 'created_at' ? diff : -diff
+      })
 
-    const total = sorted.length
-    const start = (page - 1) * pageSize
-    const end = start + pageSize
-    const results = sorted.slice(start, end)
-    const hasNext = end < total
+      const total = sorted.length
+      const start = (page - 1) * pageSize
+      const end = start + pageSize
+      const results = sorted.slice(start, end)
+      const hasNext = end < total
 
-    const response: CommentsResponse = {
-      count: total,
-      next: hasNext
-        ? `http://localhost:5173/api/v1/posts/${postId}/comments/?page=${page + 1}&page_size=${pageSize}`
-        : null,
-      previous:
-        page > 1
-          ? `http://localhost:5173/api/v1/posts/${postId}/comments/?page=${page - 1}&page_size=${pageSize}`
+      const response: CommentsResponse = {
+        count: total,
+        next: hasNext
+          ? `http://localhost:5173/api/v1/posts/${postId}/comments?page=${page + 1}&page_size=${pageSize}`
           : null,
-      results,
-    }
+        previous:
+          page > 1
+            ? `http://localhost:5173/api/v1/posts/${postId}/comments?page=${page - 1}&page_size=${pageSize}`
+            : null,
+        results,
+      }
 
-    return HttpResponse.json(response)
-  }),
+      return HttpResponse.json(response)
+    }
+  ),
 ]

@@ -12,6 +12,19 @@ interface MeResponse {
 
 export function useInitAuth() {
   useEffect(() => {
+    // URL 파라미터로 넘어온 토큰이 있으면 localStorage에 저장
+    const params = new URLSearchParams(window.location.search)
+    const urlToken = params.get('token')
+    if (urlToken) {
+      localStorage.setItem('accessToken', urlToken)
+      // URL에서 token 파라미터 제거
+      params.delete('token')
+      const newSearch = params.toString()
+      const newUrl =
+        window.location.pathname + (newSearch ? `?${newSearch}` : '')
+      window.history.replaceState(null, '', newUrl)
+    }
+
     api
       .get<MeResponse>('/api/v1/accounts/me')
       .then(({ data }) => {

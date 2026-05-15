@@ -6,9 +6,8 @@ export function useCurrentUser() {
   return useQuery({
     queryKey: ['accounts', 'me'],
     queryFn: () =>
-      api.get<MeResponse>('/api/v1/accounts/me/').then((r) => r.data),
-    enabled: !!localStorage.getItem('accessToken'),
+      api.get<MeResponse>('/api/v1/accounts/me').then((r) => r.data),
     staleTime: 60 * 1000,
-    retry: 1,
+    retry: false,
   })
 }

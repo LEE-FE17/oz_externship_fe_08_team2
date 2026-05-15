@@ -43,13 +43,10 @@ export function useImageUpload(
           })
         } catch (err) {
           if (!import.meta.env.DEV) throw err
-          // DEV(MSW) 환경에서는 S3 업로드 실패 무시 — objectUrl로 미리보기 유지
         }
-        if (!import.meta.env.DEV) {
-          onChange(valueRef.current.replaceAll(objectUrl, img_url))
-          URL.revokeObjectURL(objectUrl)
-          objectUrlsRef.current.delete(objectUrl)
-        }
+        onChange(valueRef.current.replaceAll(objectUrl, img_url))
+        URL.revokeObjectURL(objectUrl)
+        objectUrlsRef.current.delete(objectUrl)
       } catch {
         URL.revokeObjectURL(objectUrl)
         objectUrlsRef.current.delete(objectUrl)

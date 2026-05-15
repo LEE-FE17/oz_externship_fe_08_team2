@@ -259,11 +259,12 @@ export function applyInlineFromDropdown(
   const s = safeGetState(getState)
   if (!s || !textApi) return
 
-  // 1. 커서 시작 위치가 기존 <span> 안이면 span 전체를 교체 (중첩 방지)
+  // 1. 커서만 있고(선택 없음) 기존 <span> 안이면 span 전체를 교체 (중첩 방지)
+  //    선택 영역이 있으면 2번으로 넘어가 선택 텍스트에만 적용 (배경색 span 안에서 부분 글자색 적용 등)
   //    닫는 태그 뒤에 커서가 있을 때는 effectiveCursor로 실제 콘텐츠 위치를 구해 재탐색
   const effectiveCursor = getEffectiveCursor(s.text, s.selection.start)
   const spanRange = getEnclosingSpanRange(s.text, effectiveCursor)
-  if (spanRange) {
+  if (spanRange && !s.selectedText) {
     const innerText = s.text.slice(spanRange.start, spanRange.end)
     const replacement = wrapFn(innerText)
     if (
