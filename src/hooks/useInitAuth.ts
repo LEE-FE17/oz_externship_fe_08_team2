@@ -7,7 +7,7 @@ interface MeResponse {
   nickname: string
   email: string
   profile_img_url?: string | null
-  role?: 'user' | 'student' | 'admin'
+  role?: 'USER' | 'STUDENT' | 'ADMIN'
 }
 
 interface RefreshResponse {

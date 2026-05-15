@@ -6,7 +6,7 @@ export interface ProfileDropdownProps {
   onClose: () => void
   nickname: string
   email: string
-  role?: 'user' | 'student' | 'admin'
+  role?: 'USER' | 'STUDENT' | 'ADMIN'
   enrollHref?: string
   mypageHref?: string
   onLogout?: () => void
@@ -58,7 +58,7 @@ export function ProfileDropdown({
 
         {/* Menu */}
         <nav className="flex flex-col gap-1">
-          {role === 'user' && (
+          {role === 'USER' && (
             <a
               href={enrollHref}
               onClick={onClose}

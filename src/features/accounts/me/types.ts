@@ -3,4 +3,5 @@ export interface MeResponse {
   nickname: string
   email: string
   profile_img_url: string | null
+  role?: 'USER' | 'STUDENT' | 'ADMIN'
 }
