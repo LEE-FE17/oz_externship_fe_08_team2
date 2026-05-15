@@ -234,7 +234,7 @@ export function CommunityListPage() {
             ref={tabsScrollRef}
             role="tablist"
             aria-label="게시글 카테고리"
-            className="flex min-w-0 flex-1 scrollbar-none overflow-x-auto [&::-webkit-scrollbar]:hidden"
+            className="scrollbar-none flex min-w-0 flex-1 overflow-x-auto [&::-webkit-scrollbar]:hidden"
           >
             {categoryTabs.map((tab) => (
               <button
@@ -297,6 +297,9 @@ export function CommunityListPage() {
           <PostCard
             key={post.id}
             post={post}
+            categoryName={
+              categoriesData?.find((c) => c.id === post.category)?.name
+            }
             onClick={() =>
               navigate(
                 ROUTES.COMMUNITY.DETAIL.replace(':postId', String(post.id))

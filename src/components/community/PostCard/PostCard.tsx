@@ -3,6 +3,7 @@ import type { PostListItem } from '@/features/posts/list'
 
 export interface PostCardProps {
   post: PostListItem
+  categoryName?: string
   onClick?: () => void
 }
 
@@ -93,8 +94,9 @@ function EyeIcon() {
   )
 }
 
-export function PostCard({ post, onClick }: PostCardProps) {
-  const effectiveThumbnail = post.thumbnail || extractFirstImage(post.content)
+export function PostCard({ post, categoryName, onClick }: PostCardProps) {
+  const effectiveThumbnail =
+    post.thumbnail_img_url || extractFirstImage(post.content)
   const hasThumbnail = !!effectiveThumbnail
 
   return (
@@ -114,7 +116,7 @@ export function PostCard({ post, onClick }: PostCardProps) {
         {/* 텍스트 영역 */}
         <div className="flex min-w-0 flex-1 flex-col gap-1.5 overflow-hidden">
           {/* 카테고리 */}
-          <span className="text-text-muted text-xs">{post.category.name}</span>
+          <span className="text-text-muted text-xs">{categoryName}</span>
 
           {/* 제목 */}
           <h2 className="text-text-heading truncate text-base leading-snug font-semibold">
@@ -154,7 +156,7 @@ export function PostCard({ post, onClick }: PostCardProps) {
             {/* 작성자 · 시간 */}
             <div className="flex min-w-0 shrink-0 items-center gap-1.5">
               <Avatar
-                src={post.author.profile_image}
+                src={post.author.profile_img_url}
                 alt={`${post.author.nickname} 프로필`}
                 size="sm"
               />
