@@ -6,6 +6,7 @@ export interface ProfileDropdownProps {
   onClose: () => void
   nickname: string
   email: string
+  role?: 'user' | 'student' | 'admin'
   enrollHref?: string
   mypageHref?: string
   onLogout?: () => void
@@ -16,6 +17,7 @@ export function ProfileDropdown({
   onClose,
   nickname,
   email,
+  role,
   enrollHref,
   mypageHref,
   onLogout,
@@ -56,13 +58,15 @@ export function ProfileDropdown({
 
         {/* Menu */}
         <nav className="flex flex-col gap-1">
-          <a
-            href={enrollHref}
-            onClick={onClose}
-            className="hover:text-primary hover:bg-bg-accent text-text-heading inline-flex h-12 w-full items-center justify-start rounded-sm px-3 text-sm font-medium tracking-tight transition-colors duration-150"
-          >
-            수강생 등록
-          </a>
+          {role === 'user' && (
+            <a
+              href={enrollHref}
+              onClick={onClose}
+              className="hover:text-primary hover:bg-bg-accent text-text-heading inline-flex h-12 w-full items-center justify-start rounded-sm px-3 text-sm font-medium tracking-tight transition-colors duration-150"
+            >
+              수강생 등록
+            </a>
+          )}
           <a
             href={mypageHref}
             onClick={onClose}

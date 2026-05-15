@@ -11,11 +11,8 @@ export const useDeletePost = () => {
       )
       return data
     },
-    onSuccess: (_data, postId) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts', 'list'] })
-      queryClient.removeQueries({
-        queryKey: ['posts', 'detail', postId],
-      })
     },
   })
 }

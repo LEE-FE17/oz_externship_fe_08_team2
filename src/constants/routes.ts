@@ -12,6 +12,8 @@ export const ROUTES = {
     FORM: `${MY_SITE}/signup`,
   },
 
+  ENROLL: `${MY_SITE}/enroll`,
+
   MYPAGE: {
     HOME: `${MY_SITE}/mypage`,
     EDIT: `${MY_SITE}/mypage/edit`,

@@ -24,15 +24,12 @@ export interface PostListItem {
   id: number
   title: string
   content: string
-  thumbnail?: string | null
-  category: {
-    id: number
-    name: string
-  }
+  thumbnail_img_url?: string | null
+  category: number
   author: {
     id: number
     nickname: string
-    profile_image: string | null
+    profile_img_url: string | null
   }
   created_at: string
   view_count: number

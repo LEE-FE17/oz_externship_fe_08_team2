@@ -83,7 +83,8 @@ export function Header({
                 onClose={() => setDropdownOpen(false)}
                 nickname={user?.nickname ?? ''}
                 email={user?.email ?? ''}
-                enrollHref={ROUTES.SIGNUP.SELECT}
+                role={user?.role}
+                enrollHref={ROUTES.ENROLL}
                 mypageHref={
                   isAuthenticated ? ROUTES.MYPAGE.HOME : ROUTES.AUTH.LOGIN
                 }

@@ -12,12 +12,12 @@ const CATEGORIES = [
   { id: 5, name: '개발 지식 공유' },
 ]
 
-const AUTHORS = [
-  { id: 1, nickname: '조회박', profile_image: null },
-  { id: 2, nickname: '김하연', profile_image: null },
-  { id: 3, nickname: 'HG', profile_image: null },
-  { id: 4, nickname: '이민준', profile_image: null },
-  { id: 5, nickname: '박수진', profile_image: null },
+const AUTHORS: PostListItem['author'][] = [
+  { id: 1, nickname: '조회박', profile_img_url: null },
+  { id: 2, nickname: '김하연', profile_img_url: null },
+  { id: 3, nickname: 'HG', profile_img_url: null },
+  { id: 4, nickname: '이민준', profile_img_url: null },
+  { id: 5, nickname: '박수진', profile_img_url: null },
 ]
 
 const now = Date.now()
@@ -28,8 +28,8 @@ const BASE_POSTS: PostListItem[] = [
     title: '데이터 분석 프로젝트 구합니다!',
     content:
       '저는 현재 기초전을 매우 앞서 프로젝트의 업도 섭보 게시하려고 합니다. 데이터 분석 경험 있으신 분들과 함께 사이드 프로젝트 진행하고 싶습니다.',
-    thumbnail: null,
-    category: { id: 7, name: '프로젝트 구인' },
+    thumbnail_img_url: null,
+    category: 7,
     author: AUTHORS[0],
     created_at: new Date(now - 1 * HOUR).toISOString(),
     view_count: 60,
@@ -41,8 +41,8 @@ const BASE_POSTS: PostListItem[] = [
     title: '러닝 메이트 함께해요.',
     content:
       'https://www.codeit.kr/costudy/join/684e26b75155062e4621fe77힘께 공부해요. 매일 1시간씩 함께 공부할 러닝 메이트를 찾습니다.',
-    thumbnail: null,
-    category: { id: 7, name: '프로젝트 구인' },
+    thumbnail_img_url: null,
+    category: 7,
     author: AUTHORS[1],
     created_at: new Date(now - 2 * HOUR).toISOString(),
     view_count: 60,
@@ -54,8 +54,8 @@ const BASE_POSTS: PostListItem[] = [
     title: '월요일 파이팅...',
     content:
       'https://www.codeit.kr/costudy/join/684e26b75155062e4621fe77 월요병 극복하는 법 공유해요. 다들 화이팅입니다!',
-    thumbnail: 'https://picsum.photos/seed/monday/300/200',
-    category: { id: 3, name: '자유 게시판' },
+    thumbnail_img_url: 'https://picsum.photos/seed/monday/300/200',
+    category: 3,
     author: AUTHORS[2],
     created_at: new Date(now - 3 * HOUR).toISOString(),
     view_count: 60,
@@ -120,10 +120,10 @@ const GENERATED_POSTS: PostListItem[] = Array.from({ length: 97 }, (_, i) => {
     id: idx + 1,
     title: TITLES[titleIdx],
     content: CONTENTS[contentIdx],
-    thumbnail: hasThumbnail
+    thumbnail_img_url: hasThumbnail
       ? `https://picsum.photos/seed/${idx}/300/200`
       : null,
-    category: CATEGORIES[catIdx],
+    category: CATEGORIES[catIdx].id,
     author: AUTHORS[authorIdx],
     created_at: new Date(now - (idx + 1) * HOUR).toISOString(),
     view_count: 10 + ((idx * 37) % 300),
@@ -165,7 +165,7 @@ export const postListHandlers = [
     // 카테고리 필터
     if (categoryId) {
       const catId = Number(categoryId)
-      posts = posts.filter((p) => p.category.id === catId)
+      posts = posts.filter((p) => p.category === catId)
     }
 
     // 검색 필터
