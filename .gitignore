@@ -35,6 +35,9 @@ playwright-report/
 test-results/
 superpowers/
 
+# Chatbot porting source (already applied to src/)
+chatbot-port/
+
 # Claude Code local settings (may contain API tokens)
 .claude/settings.local.json
 

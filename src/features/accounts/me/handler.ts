@@ -13,6 +13,7 @@ export const meHandlers = [
       nickname: '테스트유저',
       email: 'test@example.com',
       profile_img_url: null,
+      role: 'USER',
     })
   }),
 

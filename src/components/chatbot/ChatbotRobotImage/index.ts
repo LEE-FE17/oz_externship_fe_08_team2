@@ -1,0 +1,1 @@
+export { ChatbotRobotImage } from './ChatbotRobotImage'
