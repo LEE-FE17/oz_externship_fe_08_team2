@@ -11,13 +11,13 @@ export function CommentLoadingDots() {
         }
       `}</style>
       <div className="flex items-center justify-center gap-2 py-4">
-        {[0, 1, 2, 3, 4].map((i) => (
+        {[0, 1, 2].map((i) => (
           <span
             key={i}
             className="comment-dot inline-block h-2.5 w-2.5 rounded-full"
             style={{
               backgroundColor: '#6201E0',
-              animationDelay: `${i * 0.15}s`,
+              animationDelay: `${i * 0.2}s`,
             }}
           />
         ))}
