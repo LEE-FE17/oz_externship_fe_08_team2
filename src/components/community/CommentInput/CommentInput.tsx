@@ -112,10 +112,11 @@ export function CommentInput({
         setMentionQuery(null)
         return
       }
-      const cursor = textareaRef.current?.selectionStart ?? value.length
-      setMentionQuery(getMentionQuery(value, cursor))
+      const target = e.currentTarget
+      const cursor = target.selectionStart ?? target.value.length
+      setMentionQuery(getMentionQuery(target.value, cursor))
     },
-    [value]
+    []
   )
 
   const handleSelectUser = useCallback(
