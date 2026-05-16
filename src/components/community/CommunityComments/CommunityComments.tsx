@@ -30,7 +30,7 @@ export function CommunityComments({ postId }: Props) {
   const [inputValue, setInputValue] = useState('')
   const [submitError, setSubmitError] = useState(false)
   const [submitErrorMessage, setSubmitErrorMessage] = useState('')
-  const [sortOrder, setSortOrder] = useState<SortOrder>('newest')
+  const [sortOrder, setSortOrder] = useState<SortOrder>('latest')
   const [deleteToast, setDeleteToast] = useState<{
     visible: boolean
     message: string
