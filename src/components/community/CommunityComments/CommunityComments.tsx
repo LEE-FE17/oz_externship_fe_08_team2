@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback, useState } from 'react'
+import { useEffect, useRef, useCallback, useState, useMemo } from 'react'
 import { useNavigate } from 'react-router'
 import { useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
@@ -30,7 +30,7 @@ export function CommunityComments({ postId }: Props) {
   const [inputValue, setInputValue] = useState('')
   const [submitError, setSubmitError] = useState(false)
   const [submitErrorMessage, setSubmitErrorMessage] = useState('')
-  const [sortOrder, setSortOrder] = useState<SortOrder>('oldest')
+  const [sortOrder, setSortOrder] = useState<SortOrder>('newest')
   const [deleteToast, setDeleteToast] = useState<{
     visible: boolean
     message: string
@@ -214,6 +214,14 @@ export function CommunityComments({ postId }: Props) {
   )
   const totalCount = data?.pages[0]?.count ?? 0
 
+  // 로드된 댓글 작성자들 (중복 제거) — @멘션 후보로 사용
+  const knownUsers = useMemo(() => {
+    const seen = new Set<number>()
+    return (data?.pages.flatMap((page) => page.results) ?? [])
+      .map((c) => c.author)
+      .filter((a) => !seen.has(a.id) && seen.add(a.id))
+  }, [data])
+
   if (isLoading || showInitialLoader) {
     return (
       <section className="mt-8">
@@ -262,6 +270,7 @@ export function CommunityComments({ postId }: Props) {
           submitError={submitError}
           submitErrorMessage={submitErrorMessage}
           onSubmitErrorClose={() => setSubmitError(false)}
+          knownUsers={knownUsers}
         />
       )}
 
