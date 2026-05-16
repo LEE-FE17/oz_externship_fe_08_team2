@@ -158,7 +158,7 @@ export function CommunityListPage() {
       window.location.href = ROUTES.AUTH.LOGIN
       return
     }
-    navigate(ROUTES.COMMUNITY.WRITE)
+    navigate('/community/write')
   }
 
   const currentIndex = categoryTabs.findIndex((t) => t.value === category)
@@ -300,11 +300,7 @@ export function CommunityListPage() {
             categoryName={
               categoriesData?.find((c) => c.id === post.category)?.name
             }
-            onClick={() =>
-              navigate(
-                ROUTES.COMMUNITY.DETAIL.replace(':postId', String(post.id))
-              )
-            }
+            onClick={() => navigate(`/community/${post.id}`)}
           />
         ))}
       </div>

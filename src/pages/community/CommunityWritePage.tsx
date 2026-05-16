@@ -58,7 +58,7 @@ export function CommunityWritePage() {
           variant: 'success',
         })
         navTimerRef.current = setTimeout(() => {
-          navigate(ROUTES.COMMUNITY.DETAIL.replace(':postId', String(data.pk)))
+          navigate(`/community/${data.pk}`)
         }, 800)
       },
       onError: (error) => {
@@ -90,7 +90,7 @@ export function CommunityWritePage() {
         isCategoriesError={isCategoriesError}
         isCategoriesLoading={isCategoriesLoading}
         onSubmit={handleSubmit}
-        onCancel={() => navigate(ROUTES.COMMUNITY.LIST)}
+        onCancel={() => navigate('/community')}
         isPending={isPending}
       />
       <Toast
