@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router'
 import logoImg from '@/assets/logo.png'
 import { ROUTES } from '@/constants/routes'
 import { ProfileIcon } from './icons'
@@ -17,7 +16,6 @@ export function Header({
   onLogout,
 }: HeaderProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false)
-  const navigate = useNavigate()
   const { isAuthenticated, user, logout } = useAuthStore()
   const { mutate: requestLogout } = useLogout()
 
@@ -42,12 +40,12 @@ export function Header({
             </a>
 
             <nav className="flex items-center gap-15">
-              <button
-                onClick={() => navigate(ROUTES.COMMUNITY.LIST)}
+              <a
+                href={ROUTES.COMMUNITY.LIST}
                 className="hover:text-primary px-2.5 py-2.5 text-lg tracking-tight text-gray-900 transition-colors duration-150"
               >
                 커뮤니티
-              </button>
+              </a>
               <a
                 href={ROUTES.QNA.LIST}
                 className="hover:text-primary px-2.5 py-2.5 text-lg tracking-tight text-gray-900 transition-colors duration-150"

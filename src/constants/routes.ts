@@ -34,9 +34,9 @@ export const ROUTES = {
   },
 
   COMMUNITY: {
-    LIST: '/community',
-    WRITE: '/community/write',
-    DETAIL: '/community/:postId',
-    EDIT: '/community/:postId/edit',
+    LIST: 'https://community.ozcodingschool.site/community',
+    WRITE: 'https://community.ozcodingschool.site/community/write',
+    DETAIL: 'https://community.ozcodingschool.site/community/:postId',
+    EDIT: 'https://community.ozcodingschool.site/community/:postId/edit',
   },
 } as const
