@@ -57,7 +57,7 @@ export function CommunityComments({ postId }: Props) {
     isError && axios.isAxiosError(error) && error.response?.status === 404
 
   const handleToastClose = useCallback(() => {
-    navigate(ROUTES.COMMUNITY.LIST, { replace: true })
+    navigate('/community', { replace: true })
   }, [navigate])
 
   const handleSubmit = useCallback(() => {
@@ -84,7 +84,7 @@ export function CommunityComments({ postId }: Props) {
           } else if (status === 404) {
             setSubmitErrorMessage('존재하지 않는 게시물입니다.')
             setSubmitError(true)
-            navigate(ROUTES.COMMUNITY.LIST, { replace: true })
+            navigate('/community', { replace: true })
           } else {
             setSubmitErrorMessage(
               '댓글 등록에 실패했습니다. 잠시 후 다시 시도해주세요.'
@@ -205,7 +205,7 @@ export function CommunityComments({ postId }: Props) {
           const action = deleteToast.closeAction
           setDeleteToast((prev) => ({ ...prev, visible: false }))
           if (action === 'navigate-list') {
-            navigate(ROUTES.COMMUNITY.LIST, { replace: true })
+            navigate('/community', { replace: true })
           } else if (action === 'navigate-login') {
             window.location.href = ROUTES.AUTH.LOGIN
           } else if (action === 'refresh') {
