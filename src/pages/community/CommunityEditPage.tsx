@@ -56,7 +56,7 @@ export function CommunityEditPage() {
 
   useEffect(() => {
     if (isPostError) {
-      navigate(ROUTES.COMMUNITY.LIST, { replace: true })
+      navigate('/community', { replace: true })
     }
   }, [isPostError, navigate])
 
@@ -69,7 +69,7 @@ export function CommunityEditPage() {
           variant: 'success',
         })
         setTimeout(() => {
-          navigate(ROUTES.COMMUNITY.DETAIL.replace(':postId', postId!))
+          navigate(`/community/${postId}`)
         }, 800)
       },
       onError: (error) => {
