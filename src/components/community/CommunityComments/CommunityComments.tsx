@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback, useState } from 'react'
+import { useEffect, useRef, useCallback, useState, useMemo } from 'react'
 import { useNavigate } from 'react-router'
 import { useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
@@ -30,7 +30,7 @@ export function CommunityComments({ postId }: Props) {
   const [inputValue, setInputValue] = useState('')
   const [submitError, setSubmitError] = useState(false)
   const [submitErrorMessage, setSubmitErrorMessage] = useState('')
-  const [sortOrder, setSortOrder] = useState<SortOrder>('oldest')
+  const [sortOrder, setSortOrder] = useState<SortOrder>('latest')
   const [deleteToast, setDeleteToast] = useState<{
     visible: boolean
     message: string
@@ -151,18 +151,54 @@ export function CommunityComments({ postId }: Props) {
     [deleteComment]
   )
 
-  // 무한스크롤 IntersectionObserver
+  // 최소 1초 로딩 표시 — 초기 로딩
+  const [showInitialLoader, setShowInitialLoader] = useState(true)
+  useEffect(() => {
+    if (!isLoading) {
+      const timer = setTimeout(() => setShowInitialLoader(false), 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [isLoading])
+
+  // 최소 1초 로딩 표시 — 무한스크롤 로딩
+  const [showScrollLoader, setShowScrollLoader] = useState(false)
+  useEffect(() => {
+    if (isFetchingNextPage) {
+      const timer = setTimeout(() => setShowScrollLoader(true), 0)
+      return () => clearTimeout(timer)
+    } else {
+      const timer = setTimeout(() => setShowScrollLoader(false), 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [isFetchingNextPage])
+
+  // 스크롤 여부 추적 — 한 번이라도 스크롤해야 무한스크롤 허용 (자동 발동 방지)
+  const hasScrolledRef = useRef(false)
+  useEffect(() => {
+    const onScroll = () => {
+      hasScrolledRef.current = true
+    }
+    window.addEventListener('scroll', onScroll, { passive: true, once: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // 무한스크롤: sentinel이 viewport에 들어올 때 다음 페이지 요청
   useEffect(() => {
     const el = loadMoreRef.current
     if (!el) return
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+        if (
+          entries[0].isIntersecting &&
+          hasNextPage &&
+          !isFetchingNextPage &&
+          hasScrolledRef.current
+        ) {
           fetchNextPage()
         }
       },
-      { threshold: 0.5 }
+      { threshold: 0.1 }
     )
 
     observer.observe(el)
@@ -178,7 +214,15 @@ export function CommunityComments({ postId }: Props) {
   )
   const totalCount = data?.pages[0]?.count ?? 0
 
-  if (isLoading) {
+  // 로드된 댓글 작성자들 (중복 제거) — @멘션 후보로 사용
+  const knownUsers = useMemo(() => {
+    const seen = new Set<number>()
+    return (data?.pages.flatMap((page) => page.results) ?? [])
+      .map((c) => c.author)
+      .filter((a) => !seen.has(a.id) && seen.add(a.id))
+  }, [data])
+
+  if (isLoading || showInitialLoader) {
     return (
       <section className="mt-8">
         <CommentLoadingDots />
@@ -226,6 +270,7 @@ export function CommunityComments({ postId }: Props) {
           submitError={submitError}
           submitErrorMessage={submitErrorMessage}
           onSubmitErrorClose={() => setSubmitError(false)}
+          knownUsers={knownUsers}
         />
       )}
 
@@ -258,7 +303,7 @@ export function CommunityComments({ postId }: Props) {
 
       {/* 무한스크롤 감지 영역 + 로딩 표시 */}
       <div ref={loadMoreRef} className="py-2">
-        {isFetchingNextPage && <CommentLoadingDots />}
+        {showScrollLoader && <CommentLoadingDots />}
       </div>
     </section>
   )

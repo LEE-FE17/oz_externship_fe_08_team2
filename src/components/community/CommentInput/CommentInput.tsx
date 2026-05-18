@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, type ReactNode } from 'react'
 import { Toast } from '@/components'
-import { useUserSearch } from '@/features/accounts/user-search'
 import { UserTagList } from '@/components/community/UserTagList'
+import type { UserSearchResult } from '@/features/accounts/user-search'
 
 interface CommentInputProps {
   value: string
@@ -11,6 +11,7 @@ interface CommentInputProps {
   submitError: boolean
   submitErrorMessage?: string
   onSubmitErrorClose: () => void
+  knownUsers?: UserSearchResult[]
 }
 
 function getMentionQuery(text: string, cursorPos: number): string | null {
@@ -72,14 +73,13 @@ export function CommentInput({
   submitError,
   submitErrorMessage = '댓글 등록에 실패했습니다. 잠시 후 다시 시도해주세요.',
   onSubmitErrorClose,
+  knownUsers = [],
 }: CommentInputProps) {
   const [isFocused, setIsFocused] = useState(false)
   const [mentionQuery, setMentionQuery] = useState<string | null>(null)
   const [taggedNicknames, setTaggedNicknames] = useState<Set<string>>(new Set())
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const mirrorRef = useRef<HTMLDivElement>(null)
-
-  const { data: searchData } = useUserSearch(mentionQuery ?? '')
 
   const syncScroll = useCallback(() => {
     if (mirrorRef.current && textareaRef.current) {
@@ -112,10 +112,11 @@ export function CommentInput({
         setMentionQuery(null)
         return
       }
-      const cursor = textareaRef.current?.selectionStart ?? value.length
-      setMentionQuery(getMentionQuery(value, cursor))
+      const target = e.currentTarget
+      const cursor = target.selectionStart ?? target.value.length
+      setMentionQuery(getMentionQuery(target.value, cursor))
     },
-    [value]
+    []
   )
 
   const handleSelectUser = useCallback(
@@ -140,7 +141,12 @@ export function CommentInput({
     [value, onChange]
   )
 
-  const users = searchData?.results ?? []
+  const users =
+    mentionQuery !== null
+      ? knownUsers.filter((u) =>
+          u.nickname.toLowerCase().includes(mentionQuery.toLowerCase())
+        )
+      : []
   const showDropdown = mentionQuery !== null && users.length > 0
 
   return (
