@@ -6,7 +6,7 @@ import { postDetailHandlers } from '@/features/posts/detail'
 import { editHandlers } from '@/features/posts/edit'
 import { postLikeHandlers } from '@/features/posts/like'
 import { postDeleteHandlers } from '@/features/posts/delete'
-// import { commentsHandlers } from '@/features/posts/comments'
+import { commentsHandlers } from '@/features/posts/comments'
 import { userSearchHandlers } from '@/features/accounts/user-search'
 // import { logoutHandlers } from '@/features/accounts/logout'
 import { meHandlers } from '@/features/accounts/me'
@@ -25,7 +25,7 @@ export const handlers = [
   ...writeHandlers,
   ...postDetailHandlers,
   ...editHandlers,
-  // ...commentsHandlers,
+  ...commentsHandlers,
   ...postLikeHandlers,
   ...postDeleteHandlers,
   ...userSearchHandlers,
