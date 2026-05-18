@@ -23,7 +23,10 @@
 
 |    게시글 목록     |  게시글 상세 조회  |    게시글 수정     |
 | :----------------: | :----------------: | :----------------: |
-| 스크린샷 추가 예정 | 스크린샷 추가 예정 | 스크린샷 추가 예정 |
+| <img width="1512" height="862" alt="스크린샷 2026-05-18 오전 11 20 58" src="https://github.com/user-attachments/assets/3efd804d-d0e7-4b94-a63b-799e0ab0ffc9" />
+ | <img width="1512" height="863" alt="스크린샷 2026-05-18 오전 11 21 24" src="https://github.com/user-attachments/assets/ffb46ad5-2869-4fa4-aadb-fa02c78bf78d" />
+ | <img width="1512" height="863" alt="스크린샷 2026-05-18 오전 11 23 44" src="https://github.com/user-attachments/assets/7c76d71e-6135-4aab-ad5a-4641485d7424" />
+ |
 
 ---
 
